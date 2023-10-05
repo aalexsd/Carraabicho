@@ -35,16 +35,21 @@ class _VeterinarioScreenState extends State<VeterinarioScreen> {
           return ListTile(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            leading: Image.asset(tabela[profissao].foto),
+            leading: SizedBox(
+                child: Image.asset(tabela[profissao].foto,
+                height: 200,
+                width: 100,)),
             title: Text(
               tabela[profissao].nome,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
             ),
             subtitle: Text(
               tabela[profissao].localizacao,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
             ),
             trailing: Text(real.format(tabela[profissao].preco)),
+            contentPadding: const EdgeInsets.all(4),
+
             // selected: selecionadas.contains(tabela[profissao]),
             // selectedTileColor: Colors.indigo[50],
             // onTap: () {
@@ -67,7 +72,7 @@ class _VeterinarioScreenState extends State<VeterinarioScreen> {
             // },
           );
         },
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
         separatorBuilder: (_, __) => const Divider(
           thickness: 1.0,
         ),
