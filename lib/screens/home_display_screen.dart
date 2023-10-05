@@ -1,11 +1,11 @@
 import 'package:Carrrabicho/screens/veterinario_screen.dart';
+import 'package:Carrrabicho/widgets/image_carousel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'adestrador_screen.dart';
 import 'cuidador_display.dart';
-
 
 class HomeDisplayScreen extends StatefulWidget {
   const HomeDisplayScreen({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
   int selectedValue = 0;
+  bool _loadingEcom = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -49,6 +50,8 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenW = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -103,89 +106,233 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * .03,
+              height: MediaQuery.of(context).size.height * .02,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * .8,
-                child: const Text(
-                  'O que você está procurando hoje?',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: const Text(
+                    'O que você está procurando hoje?',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
             Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 10),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * .15,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const VeterinarioScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Veterinário',
-                      style:
-                      TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    )),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Column(
+                children: [
+                  1 == 1
+                      ? Row(
+                          children: [
+                            _loadingEcom
+                                ? Container(
+                                    height: screenHeight / 6,
+                                    width: screenW / 2 - 28,
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
+                                    padding: const EdgeInsets.all(5.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                    ),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VeterinarioScreen()),
+                                      );
+                                    },
+                                    child: Container(
+                                        height: screenHeight / 6,
+                                        width: screenW / 2 - 28,
+                                        // margin:
+                                        //     EdgeInsets.symmetric(horizontal: 3),
+                                        // padding: const EdgeInsets.all(5.0),
+                                        // decoration: BoxDecoration(
+                                        //   color: Colors.grey.shade300,
+                                        //   borderRadius: BorderRadius.all(
+                                        //       Radius.circular(5.0)),
+                                        // ),
+
+                                        margin: EdgeInsets.all(5),
+                                        padding: const EdgeInsets.all(10.0),
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                'assets/images/.avif',
+                                              ),
+                                              fit: BoxFit.fill,
+                                            ),
+                                            color: Colors.indigo,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0),
+                                            )),
+                                        child: Center(
+                                          child: Text(
+                                            'Veterinários',
+                                            style: TextStyle(fontSize: 24),
+                                          ),
+                                        )),
+                                  ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CuidadorScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                  height: screenHeight / 6,
+                                  width: screenW / 2 - 28,
+                                  margin: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          'assets/images/carteira.jpeg',
+                                        ),
+                                        fit: BoxFit.fill,
+                                      ),
+                                      color: Colors.indigo,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      )),
+                                  child: Center(
+                                    child: Text(
+                                      'Cuidadores',
+                                      style: TextStyle(fontSize: 24),
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 17,
+                              width: 5,
+                            ),
+                          ],
+                        )
+                      : SizedBox(
+                          height: 150,
+                        ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      _loadingEcom
+                          ? Container(
+                              height: screenHeight / 6,
+                              width: screenW / 2 - 28,
+                              margin: EdgeInsets.symmetric(horizontal: 3),
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AdestradorScreen()));
+                              },
+                              child: Container(
+                                  height: screenHeight / 6,
+                                  width: screenW / 2 - 28,
+                                  margin: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          'assets/images/CUPOM.png',
+                                        ),
+                                        fit: BoxFit.fill,
+                                      ),
+                                      color: Colors.indigo,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      )),
+                                  child: Center(
+                                    child: Text(
+                                      'Adestradores',
+                                      style: TextStyle(fontSize: 24),
+                                    ),
+                                  )),
+                            ),
+
+                      SizedBox(
+                        height: 17,
+                        width: 5,
+                      ),
+                      //abrir
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdestradorScreen()));
+                        },
+                        child: Container(
+                          height: screenHeight / 6,
+                          width: screenW / 2 - 28,
+                          margin: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/images/ULTIMASCOMPRAS.png',
+                                ),
+                                fit: BoxFit.fill,
+                              ),
+                              color: Colors.indigo,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              )),
+                            child: Center(
+                              child: Text(
+                                'Hotéis',
+                                style: TextStyle(
+                                    fontSize: 24
+                                ),
+                              ),
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
             Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 10),
+              padding: const EdgeInsets.only(left: 20.0,
+              bottom: 10),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * .15,
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const AdestradorScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Adestrador',
-                      style:
-                      TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    )),
+                child: const Text(
+                  'Fique por dentro!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 10),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * .15,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor:
-                        MaterialStatePropertyAll(Colors.green)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const CuidadorScreen()),
-                      );
-                    },
-                    child: const Text(
-                      'Cuidador',
-                      style:
-                      TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    )),
-              ),
-            ),
+            ImageCarousel()
           ],
         ));
   }
