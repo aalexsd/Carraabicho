@@ -1,6 +1,6 @@
 import 'package:Carrrabicho/repository/profissoes.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
-import 'package:Carrrabicho/widgets/signup.dart';
+import 'package:Carrrabicho/screens/signup.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -108,12 +108,13 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: screenH * .1,
                 ),
-
                 SizedBox(
-                  height: 120,
-                  width: 120,
-                    child: Image.asset('assets/images/logo.png',
-                    fit: BoxFit.contain,)),
+                    height: 120,
+                    width: 120,
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.contain,
+                    )),
                 Center(
                   child: Flexible(
                     child: Container(
@@ -152,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: -1),
                           ),
-                          if(!isLogin)
+                          if (!isLogin)
                             Column(
                               children: [
                                 Row(
@@ -166,10 +167,11 @@ class _LoginPageState extends State<LoginPage> {
                                         });
                                       },
                                     ),
-                                    const Text('Sou usuário',
+                                    const Text(
+                                      'Sou usuário',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold
-                                      ),),
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                     Radio<bool>(
                                       value: false,
                                       groupValue: isUsuario,
@@ -179,43 +181,42 @@ class _LoginPageState extends State<LoginPage> {
                                         });
                                       },
                                     ),
-                                    const Text('Sou prestador de Serviço',
+                                    const Text(
+                                      'Sou prestador de Serviço',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold
-                                      ),),
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
-                          if(!isLogin && isUsuario)
-                            GeneralSignUp(),
-                          if(!isLogin && !isUsuario)
+                          if (!isLogin && isUsuario) GeneralSignUp(),
+                          if (!isLogin && !isUsuario)
                             Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 24, right: 24),
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24),
                                   child: DropdownSearch<String>(
                                     popupProps: PopupProps.menu(
                                       fit: FlexFit.tight,
                                       showSelectedItems: true,
                                       showSearchBox: false,
                                     ),
-                                    items: Profissaorepository
-                                        .listProfissao,
+                                    items: Profissaorepository.listProfissao,
                                     dropdownDecoratorProps:
-                                    DropDownDecoratorProps(
-                                      dropdownSearchDecoration:
-                                      InputDecoration(
+                                        DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         prefixIcon: Icon(Icons.shopping_bag),
                                         hintText: 'Tipo de Prestador',
                                         labelText: 'Tipo de Prestador',
-                                        contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                        contentPadding:
+                                            EdgeInsets.symmetric(vertical: 8),
                                       ),
                                     ),
                                     validator: (value) {
-                                      if (value == null ||
-                                          value.isEmpty) {
+                                      if (value == null || value.isEmpty) {
                                         return 'Selecione o Tipo de Serviço';
                                       }
                                       return null; // Retorna null se o campo estiver preenchido corretamente
@@ -238,7 +239,8 @@ class _LoginPageState extends State<LoginPage> {
                                       prefixIcon: Icon(Icons.email),
                                       hintText: 'Digite seu E-mail',
                                       labelText: 'Email',
-                                      contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 8),
                                     ),
                                     keyboardType: TextInputType.emailAddress,
                                     validator: (value) {
@@ -260,7 +262,8 @@ class _LoginPageState extends State<LoginPage> {
                                       prefixIcon: Icon(Icons.lock),
                                       hintText: 'Digite sua Senha',
                                       labelText: 'Senha',
-                                      contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 8),
                                       suffixIcon: InkWell(
                                         onTap: _togglePasswordVisibility,
                                         child: Padding(
@@ -294,7 +297,8 @@ class _LoginPageState extends State<LoginPage> {
                                       TextButton(
                                         child: const Text(
                                           'Esqueceu sua senha?',
-                                          style: TextStyle(color: Colors.indigo),
+                                          style:
+                                              TextStyle(color: Colors.indigo),
                                         ),
                                         onPressed: () {
                                           onForgotPasswordClicked(context);
@@ -327,32 +331,32 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: (loading)
                                     ? [
-                                  const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                ]
+                                        const Padding(
+                                          padding: EdgeInsets.all(16),
+                                          child: SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      ]
                                     : [
-                                  Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:
-                                      (isLogin) ?
-                                      Text(
-                                        actionButton,
-                                        style: const TextStyle(fontSize: 20),
-                                      )
-                                          : Text(
-                                        'Prosseguir',
-                                        style: const TextStyle(fontSize: 20),
-                                      )
-                                  ),
-                                ],
+                                        Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: (isLogin)
+                                                ? Text(
+                                                    actionButton,
+                                                    style: const TextStyle(
+                                                        fontSize: 20),
+                                                  )
+                                                : Text(
+                                                    'Prosseguir',
+                                                    style: const TextStyle(
+                                                        fontSize: 20),
+                                                  )),
+                                      ],
                               ),
                             ),
                           ),
@@ -381,28 +385,27 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           if (isLogin)
                             Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 10.0),
-                                    child: SignInButton(
-                                      Buttons.google,
-                                      text: 'Entre com o Google',
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      onPressed: () {
-                                        signInWithGoogle();
-                                      },
-                                    ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: SignInButton(
+                                  Buttons.google,
+                                  text: 'Entre com o Google',
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
+                                  onPressed: () {
+                                    signInWithGoogle();
+                                  },
                                 ),
+                              ),
+                            ),
                           TextButton(
-                                  onPressed: () => setFormAction(!isLogin),
-                                  child: Text(
-                                    toggleButton,
-                                    style: const TextStyle(color: Colors.indigo),
-                                  ),
-                                ),
-
+                            onPressed: () => setFormAction(!isLogin),
+                            child: Text(
+                              toggleButton,
+                              style: const TextStyle(color: Colors.indigo),
+                            ),
+                          ),
                         ],
                       ),
                     ),

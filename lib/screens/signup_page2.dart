@@ -226,6 +226,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                               top: 10.0, bottom: 5, left: 24, right: 24),
                           child: ElevatedButton(
                             onPressed: () {
+
                             },
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.black,

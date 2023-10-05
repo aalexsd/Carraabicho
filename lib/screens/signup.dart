@@ -8,6 +8,7 @@ class GeneralSignUp extends StatefulWidget {
 }
 
 class _GeneralSignUpState extends State<GeneralSignUp> {
+  final nome = TextEditingController();
   final email = TextEditingController();
   final senha = TextEditingController();
 
@@ -21,7 +22,7 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
           padding: const EdgeInsets.only(
               left: 24, right: 24, top: 10),
           child: TextFormField(
-            controller: email,
+            controller: nome,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.person),
