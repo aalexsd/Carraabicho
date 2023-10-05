@@ -105,13 +105,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                (isLogin)
-                ?  SizedBox(
+                SizedBox(
                   height: screenH * .1,
-                )
-                : SizedBox(
-                  height: screenH * .01,
                 ),
+
                 SizedBox(
                   height: 120,
                   width: 120,
@@ -310,7 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 10.0, bottom: 5, left: 24, right: 24),
+                                top: 10.0, left: 24, right: 24),
                             child: ElevatedButton(
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
@@ -323,6 +320,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                               style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.all(5),
                                 backgroundColor: Colors.black,
                               ),
                               child: Row(
