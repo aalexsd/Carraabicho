@@ -179,7 +179,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                         child: Center(
                                           child: Text(
                                             'Veterinários',
-                                            style: TextStyle(fontSize: 24),
+                                            style: TextStyle(fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                           ),
                                         )),
                                   ),
@@ -211,7 +213,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   child: Center(
                                     child: Text(
                                       'Cuidadores',
-                                      style: TextStyle(fontSize: 24),
+                                      style: TextStyle(fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                     ),
                                   )),
                             ),
@@ -224,9 +228,6 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                       : SizedBox(
                           height: 150,
                         ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Row(
                     children: [
                       _loadingEcom
@@ -270,16 +271,12 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   child: Center(
                                     child: Text(
                                       'Adestradores',
-                                      style: TextStyle(fontSize: 24),
+                                      style: TextStyle(fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
                                   )),
                             ),
-
-                      SizedBox(
-                        height: 17,
-                        width: 5,
-                      ),
-                      //abrir
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -288,30 +285,29 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   builder: (context) => AdestradorScreen()));
                         },
                         child: Container(
-                          height: screenHeight / 6,
-                          width: screenW / 2 - 28,
-                          margin: EdgeInsets.all(5),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/ULTIMASCOMPRAS.png',
+                            height: screenHeight / 6,
+                            width: screenW / 2 - 28,
+                            margin: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/ULTIMASCOMPRAS.png',
+                                  ),
+                                  fit: BoxFit.fill,
                                 ),
-                                fit: BoxFit.fill,
-                              ),
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              )),
+                                color: Colors.indigo,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                )),
                             child: Center(
                               child: Text(
                                 'Hotéis',
-                                style: TextStyle(
-                                    fontSize: 24
-                                ),
+                                style: TextStyle(fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
-                            )
-                        ),
+                            )),
                       ),
                     ],
                   ),
@@ -322,8 +318,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0,
-              bottom: 10),
+              padding: const EdgeInsets.only(left: 20.0, bottom: 10),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: const Text(
