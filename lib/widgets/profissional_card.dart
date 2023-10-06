@@ -1,5 +1,6 @@
+import 'package:Carrrabicho/screens/profissional_detalhes.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import '../models/profissional.dart';
 
 class ProfissionalCard extends StatefulWidget {
@@ -8,104 +9,123 @@ class ProfissionalCard extends StatefulWidget {
   ProfissionalCard({Key? key, required this.profissional}) : super(key: key);
 
   @override
-  _ProfissionalCardState createState() => _ProfissionalCardState();
+  State<ProfissionalCard> createState() => _ProfissionalCardState();
 }
 
 class _ProfissionalCardState extends State<ProfissionalCard> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
-  static Map<String, Color> precoColor = <String, Color>{
-    'up': Colors.teal,
-    'down': Colors.indigo,
-  };
-
-  // abrirDetalhes() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (_) => MoedasDetalhes(moeda: widget.moeda),
-  //     ),
-  //   );
-  // }
+  abrirDetalhes() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProfissionalDetalhes(profissional: widget.profissional),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(top: 12),
-      elevation: 2,
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
       child: InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
-          child: Row(
-            children: [
-              SizedBox(
-                child: Image.asset(
-                  widget.profissional.foto,
-                  height: 40,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        onTap: () => abrirDetalhes(),
+        child: Stack(
+          children: [
+            Container(
+              height: 80,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4), color: Colors.white),
+            ),
+            Column(
+              children: [
+                Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white24,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.profissional.nome,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      Container(
+                        height: 120,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.grey,
                         ),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.asset(widget.profissional.foto,
+                                fit: BoxFit.cover)),
                       ),
-                      Text(
-                        widget.profissional.localizacao,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black45,
-                        ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              widget.profissional.nome,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Local: ${widget.profissional.localizacao}',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'R\$: ${widget.profissional.preco}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                                color: Colors.red[500]),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: precoColor['down']!.withOpacity(0.05),
-                  border: Border.all(
-                    color: precoColor['down']!.withOpacity(0.4),
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Text(
-                  real.format(widget.profissional.preco),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: precoColor['down'],
-                    letterSpacing: -1,
-                  ),
-                ),
-              ),
-              // PopupMenuButton(
-              //   icon: const Icon(Icons.more_vert),
-              //   itemBuilder: (context) => [
-              //     PopupMenuItem(
-              //       child: ListTile(
-              //         title: const Text('Remover das Favoritas'),
-              //         onTap: () {
-              //           Navigator.pop(context);
-              //           Provider.of<FavoritasRepository>(context, listen: false)
-              //               .remove(widget.moeda);
-              //         },
-              //       ),
-              //     ),
-              //   ],
-              // ),
-            ],
-          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: SizedBox(
+                    //     width: 200,
+                    //     child: LinearProgressIndicator(
+                    //       color: Colors.white,
+                    //       value: ((widget.quantidade > 0)
+                    //           ? (widget.nivel / widget.quantidade)
+                    //           : 1),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Text(
+                    //     'Feito: ${widget.nivel}',
+                    //     style: const TextStyle(fontSize: 15, color: Colors.white),
+                    //   ),
+                    // ),
+                  ],
+                )
+              ],
+            )
+          ],
         ),
       ),
     );

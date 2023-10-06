@@ -11,10 +11,14 @@ class Profissaorepository {
 class ProfissionalRepository{
 
   static List<Profissional> tabela = [
-    Profissional(foto: 'assets/images/vetbonito.avif', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
-    Profissional(foto: 'assets/images/cuidadorbonito.avif', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
-    Profissional(foto: 'assets/images/vetbonito.avif', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
-    Profissional(foto: 'assets/images/cuidadorbonito.avif', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
+    Profissional(foto: 'assets/images/veterinario1.jpeg', nome: 'Alex', localizacao: 'Taguatinga', preco: 100),
   ];
 }
 
