@@ -32,6 +32,7 @@ class _ProfissionalDetalhesState extends State<ProfissionalDetalhes> {
   @override
   Widget build(BuildContext context) {
     final screenW = MediaQuery.of(context).size.width;
+    final screenH = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,95 +49,134 @@ class _ProfissionalDetalhesState extends State<ProfissionalDetalhes> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: screenW * .1,
-                    child: Image.asset(widget.profissional.foto),
+                    width: screenW * .8,
+                    height: screenH * .35,
+                    child: Image.asset(widget.profissional.foto,
+                    fit: BoxFit.cover,),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    real.format(widget.profissional.preco),
-                    style: TextStyle(
-                        fontSize: 26,
-                        letterSpacing: -1,
-                        color: Colors.grey[800]),
-                  ),
                 ],
               ),
             ),
-            (quantidade > 0)
-                ? SizedBox(
-              width: screenW,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 24),
-                // padding: EdgeInsets.all(12),
-                alignment: Alignment.center,
-                child: Text(
-                  '$quantidade ${widget.profissional.localizacao}',
-                  style:
-                  const TextStyle(fontSize: 20, color: Colors.teal),
-                ),
-                // decoration: BoxDecoration(
-                //   color: Colors.teal.withOpacity(0.05)
-                // ),
-              ),
-            )
-                : Container(
-              margin: const EdgeInsets.only(bottom: 24),
+            Text("Valor da consulta: " +
+              real.format(widget.profissional.preco),
+              style: TextStyle(
+                  fontSize: 26,
+                  letterSpacing: -1,
+                  color: Colors.grey[800]),
             ),
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                controller: _valor,
-                style: const TextStyle(fontSize: 22),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Valor',
-                  prefixIcon: Icon(Icons.monetization_on_outlined),
-                  suffix: Text(
-                    'reais',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Informe o valor da compra.';
-                  } else if (double.parse(value) < 50) {
-                    return 'Compra mínima é R\$ 50,00';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    quantidade = (value.isEmpty)
-                        ? 0
-                        : double.parse(value) / widget.profissional.preco;
-                  });
-                },
-              ),
+            SizedBox(
+              height: 5,
             ),
+            Text("Localização: " +
+              widget.profissional.localizacao,
+              style: TextStyle(
+                  fontSize: 18,
+                  letterSpacing: -1,
+                  color: Colors.grey[800]),
+            ),
+            // (quantidade > 0)
+            //     ? SizedBox(
+            //   width: screenW,
+            //   child: Container(
+            //     margin: const EdgeInsets.only(bottom: 24),
+            //     // padding: EdgeInsets.all(12),
+            //     alignment: Alignment.center,
+            //     child: Text(
+            //       '$quantidade ${widget.profissional.localizacao}',
+            //       style:
+            //       const TextStyle(fontSize: 20, color: Colors.teal),
+            //     ),
+            //     // decoration: BoxDecoration(
+            //     //   color: Colors.teal.withOpacity(0.05)
+            //     // ),
+            //   ),
+            // )
+            //     : Container(
+            //   margin: const EdgeInsets.only(bottom: 24),
+            // ),
+            SizedBox(
+              height: 20,
+            ),
+            // Form(
+            //   key: _formKey,
+            //   child: TextFormField(
+            //     controller: _valor,
+            //     style: const TextStyle(fontSize: 22),
+            //     decoration: const InputDecoration(
+            //       border: OutlineInputBorder(),
+            //       labelText: 'Valor',
+            //       prefixIcon: Icon(Icons.monetization_on_outlined),
+            //       suffix: Text(
+            //         'reais',
+            //         style: TextStyle(fontSize: 14),
+            //       ),
+            //     ),
+            //     keyboardType: TextInputType.number,
+            //     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            //     validator: (value) {
+            //       if (value!.isEmpty) {
+            //         return 'Informe o valor da compra.';
+            //       } else if (double.parse(value) < 50) {
+            //         return 'Compra mínima é R\$ 50,00';
+            //       }
+            //       return null;
+            //     },
+            //     onChanged: (value) {
+            //       setState(() {
+            //         quantidade = (value.isEmpty)
+            //             ? 0
+            //             : double.parse(value) / widget.profissional.preco;
+            //       });
+            //     },
+            //   ),
+            // ),
             Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.only(top: 24),
-              child: ElevatedButton(
-                  onPressed: () {
-                    comprar();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.check),
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Text(
-                          'Comprar',
-                          style: TextStyle(fontSize: 20),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: screenW * .35,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            comprar();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(
+                              'Reservar',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: screenW * .5,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green
                         ),
-                      ),
-                    ],
-                  )),
+                          onPressed: () {
+                            comprar();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(
+                              'Iniciar conversa',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
