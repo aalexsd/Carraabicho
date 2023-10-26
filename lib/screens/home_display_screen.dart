@@ -86,7 +86,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                   signOutGoogle().then((value) => Navigator.pop(context));
                   FirebaseAuth.instance.signOut();
                 },
-                child: const ListTile(
+                child: ListTile(
                   title: Row(
                     children: [
                       Icon(Icons.exit_to_app),
