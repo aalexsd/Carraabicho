@@ -3,7 +3,7 @@
     <channel>
         <title>Nome do seu Aplicativo</title>
         <item>
-            <title>Version 2.0</title>
+            <title>Version 1.1.5</title>
             <description>Novidades</description>
             <pubDate>Sat, 26 Jul 2014 15:20:11 +0000</pubDate>
             <enclosure url="https://play.google.com/store/apps/details?id=br.justapps.mercadoapp.mercadoapp" sparkle:version="1.1.5" sparkle:os="android" />
