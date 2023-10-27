@@ -1,5 +1,6 @@
 import 'package:Carrrabicho/screens/veterinario_screen.dart';
 import 'package:Carrrabicho/widgets/image_carousel.dart';
+import 'package:Carrrabicho/widgets/sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -69,38 +70,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         //creates a side screen
-        drawer: Drawer(
-          backgroundColor: Colors.white,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Text(
-                  'Menu',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  signOutGoogle().then((value) => Navigator.pop(context));
-                  FirebaseAuth.instance.signOut();
-                },
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Icon(Icons.exit_to_app),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('Sair'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        drawer: Menu(),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,14 +302,5 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
         ));
   }
 
-  //method to signout of a google account
-  Future<void> signOutGoogle() async {
-    await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Logout realizado com sucesso')),
-    );
-  }
 }
 //
