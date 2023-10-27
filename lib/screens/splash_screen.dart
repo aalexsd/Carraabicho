@@ -73,7 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return AnimatedSplashScreen(
       backgroundColor: Colors.indigo,
-      splash: textsplash,
+      splash: Image.asset('assets/images/splashscreen.png',
+      fit: BoxFit.cover,),
       splashIconSize: MediaQuery.of(context).size.height,
       nextScreen: const AuthCheck(),
       splashTransition: SplashTransition.scaleTransition,
