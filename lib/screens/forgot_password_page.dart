@@ -45,15 +45,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/carrabicho.png'),
-                        radius: 60,
-                        backgroundColor: Colors.white,
-                      ),
+                      child: SizedBox(
+                          height: 150,
+                          width: 200,
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            fit: BoxFit.contain,
+                          )),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20, left: 24.0),
+                      padding: const EdgeInsets.only(top: 10, left: 24.0),
                       child: SizedBox(
                         width: mediaquery.size.height * .5,
                         child: const Text(
