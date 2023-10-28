@@ -229,6 +229,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         }
                                         return null; // Retorna null se o campo estiver preenchido corretamente
                                       },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedProfissao = value;
+                                          user.tipoServico = value;
+                                        });
+                                      },
                                     ),
                                   ),
                                   Padding(
@@ -322,10 +328,20 @@ class _SignUpPage3State extends State<SignUpPage3> {
                               top: 10.0, bottom: 5, left: 24, right: 24),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-
-                              }
                               print(user.cep);
+                              if (_formKey.currentState!.validate()) {
+                                if (senha.text != confirmasenha.text) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('As senhas não coincidem!'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                } else {
+                                  // As senhas coincidem, continue com o registro.
+                                  // Você pode adicionar sua lógica de registro aqui.
+                                }
+                              }
                             },
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.black,

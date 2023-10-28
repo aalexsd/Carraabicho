@@ -1,5 +1,7 @@
 import 'package:Carrrabicho/models/result_pessoa.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import '../data/via_cep_service.dart';
 
@@ -79,6 +81,11 @@ class _SignUpPage2State extends State<SignUpPage2> {
                         Padding(
                           padding: const EdgeInsets.only(right: 24.0, left: 24),
                           child: TextFormField(
+                            inputFormatters: [
+                              // obrigatório
+                              FilteringTextInputFormatter.digitsOnly,
+                              CepInputFormatter()
+                            ],
                             textInputAction: TextInputAction.next,
                             // autofocus: true,
                             controller: widget._searchCepController,

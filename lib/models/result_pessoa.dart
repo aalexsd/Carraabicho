@@ -24,6 +24,7 @@ class ResultPessoa {
   String? cidade;
   String? uf;
   String? senha;
+  String? tipoServico;
 
   ResultPessoa(
       {required this.id,
@@ -41,6 +42,7 @@ class ResultPessoa {
       required this.bairro,
       required this.cidade,
       required this.senha,
+      required this.tipoServico,
       required this.uf,});
   factory ResultPessoa.fromJson(Map<String, dynamic> json) => ResultPessoa(
       id: json["id"],
@@ -58,6 +60,7 @@ class ResultPessoa {
       bairro: json["bairro"],
       cidade: json["cidade"],
       senha: json["senha"],
+      tipoServico: json["tipoServico"],
       uf: json["uf"],);
 
 
@@ -79,6 +82,7 @@ class ResultPessoa {
       bairro: json["bairro"],
       cidade: json["cidade"],
       senha: json["senha"],
+      tipoServico: json["tipoServico"],
       uf: json["uf"],);
 
   Map<String, dynamic> toMap() => {
@@ -97,8 +101,9 @@ class ResultPessoa {
         "bairro": bairro,
         "cidade": cidade,
         "senha": senha,
+        "tipoServico": tipoServico,
         "uf": uf,
       };
 }
 
-ResultPessoa user = ResultPessoa(id: 0, cpf: '', nome: '', codigo: '', email: '', nasc: '', celular: '', sexo: '', cep: '', endereco: '', numero: '', complemento: '', bairro: '', cidade: '', uf: '', senha: '');
+ResultPessoa user = ResultPessoa(id: 0, cpf: '', nome: '', codigo: '', email: '', nasc: '', celular: '', sexo: '', cep: '', endereco: '', numero: '', complemento: '', bairro: '', cidade: '', uf: '', senha: '', tipoServico: '');
