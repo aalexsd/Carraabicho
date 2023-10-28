@@ -2,6 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../models/result_pessoa.dart';
+
 class GeneralSignUp extends StatefulWidget {
   const GeneralSignUp({super.key});
 
@@ -40,6 +42,11 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
               }
               return null;
             },
+            onChanged: (value){
+              setState(() {
+                user.nome = value;
+              });
+            },
           ),
         ),
         Padding(
@@ -60,6 +67,11 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
                 return 'Informe o email corretamente!';
               }
               return null;
+            },
+            onChanged: (value){
+              setState(() {
+                user.email = value;
+              });
             },
           ),
         ),
@@ -86,6 +98,11 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
                 return 'Informa seu telefone!';
               }
               return null;
+            },
+            onChanged: (value){
+              setState(() {
+                user.senha = value;
+              });
             },
           ),
         ),
