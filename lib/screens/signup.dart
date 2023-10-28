@@ -68,30 +68,14 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
             controller: senha,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.lock),
-              hintText: 'Digite sua Senha',
-              labelText: 'Senha',
+              prefixIcon: Icon(Icons.phone),
+              hintText: 'Digite seu Telefone',
+              labelText: 'Telefone',
               contentPadding: EdgeInsets.symmetric(vertical: 8),
-              suffixIcon: InkWell(
-                onTap: _togglePasswordVisibility,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 12.0, right: 12, bottom: 12),
-                  child: Text(
-                    showPassword ? 'Ocultar' : 'Exibir',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Informa sua senha!';
-              } else if (value.length < 6) {
-                return 'Sua senha deve ter no mínimo 6 caracteres';
+                return 'Informa seu telefone!';
               }
               return null;
             },
