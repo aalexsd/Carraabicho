@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GeneralSignUp extends StatefulWidget {
   const GeneralSignUp({super.key});
@@ -11,6 +13,7 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
   final nome = TextEditingController();
   final email = TextEditingController();
   final senha = TextEditingController();
+  final telefone = TextEditingController();
 
   bool showPassword = false;
 
@@ -30,7 +33,7 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
               labelText: 'Nome',
               contentPadding: EdgeInsets.symmetric(vertical: 8),
             ),
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Informe seu nome corretamente!';
@@ -64,8 +67,13 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
           padding: const EdgeInsets.only(
               left: 24, right: 24, top: 12),
           child: TextFormField(
-            obscureText: !showPassword,
-            controller: senha,
+            inputFormatters: [
+              // obrigatório
+              FilteringTextInputFormatter.digitsOnly,
+              TelefoneInputFormatter(),
+            ],
+            keyboardType: TextInputType.phone,
+            controller: telefone,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.phone),

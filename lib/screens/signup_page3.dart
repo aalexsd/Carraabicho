@@ -201,38 +201,33 @@ class _SignUpPage3State extends State<SignUpPage3> {
                             : Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 24.0, right: 24),
+                                  padding: const EdgeInsets.only(
+                                      left: 24, right: 24),
                                   child: DropdownSearch<String>(
-                          popupProps: PopupProps.dialog(
-                                    fit: FlexFit.tight,
-                                    showSelectedItems: true,
-                                    showSearchBox: true,
-                                    scrollbarProps: ScrollbarProps()),
-                          items: Profissaorepository.listProfissao,
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(
+                                    popupProps: PopupProps.menu(
+                                      fit: FlexFit.tight,
+                                      showSelectedItems: true,
+                                      showSearchBox: false,
                                     ),
-                                    hintText: 'Tipo de Prestador',
-                                    labelText: 'Tipo de Prestador',
+                                    items: Profissaorepository.listProfissao,
+                                    dropdownDecoratorProps:
+                                    DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.shopping_bag),
+                                        hintText: 'Tipo de Prestador',
+                                        labelText: 'Tipo de Prestador',
+                                        contentPadding:
+                                        EdgeInsets.symmetric(vertical: 8),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Selecione o Tipo de Serviço';
+                                      }
+                                      return null; // Retorna null se o campo estiver preenchido corretamente
+                                    },
                                   ),
-                          ),
-                          validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Selecione o servico';
-                                  }
-                                  return null; // Retorna null se o campo estiver preenchido corretamente
-                          },
-                          onChanged: (value) {
-                                  setState(() {
-                                    selectedProfissao = value;
-                                  });
-                          },
-                        ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
