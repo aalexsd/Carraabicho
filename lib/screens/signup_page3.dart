@@ -2,6 +2,8 @@ import 'package:Carrrabicho/repository/profissoes.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../Services/auth_services.dart';
 import '../data/via_cep_service.dart';
 import '../models/result_pessoa.dart';
 
@@ -29,6 +31,17 @@ class _SignUpPage3State extends State<SignUpPage3> {
     setState(() {
       showPassword = !showPassword;
     });
+  }
+
+  registrar() async {
+    setState(() => loading = true);
+    try {
+      await context.read<AuthService>().registrar(user.email.toString(), user.senha.toString());
+    } on AuthException catch (e) {
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    }
   }
 
   @override
@@ -338,8 +351,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     ),
                                   );
                                 } else {
-                                  // As senhas coincidem, continue com o registro.
-                                  // Você pode adicionar sua lógica de registro aqui.
+                                  registrar();
                                 }
                               }
                             },
