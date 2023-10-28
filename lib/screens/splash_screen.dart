@@ -15,32 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool isFirstTimeUser = false;
 
-
-  void checkFirstTimeUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isFirstTimeUser = prefs.getBool('isFirstTimeUser') ?? true;
-
-    if (isFirstTimeUser) {
-      // É a primeira vez do usuário, direcione-o para a página OnBoardingPage
-      prefs.setBool('isFirstTimeUser', false); // Marque que o usuário já não é mais de primeira vez
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => OnBoardingPage()), // Substitua 'OnBoardingPage' pela sua página real
-      );
-    } else {
-      // O usuário já acessou o aplicativo antes, então direcione-o para a tela de login.
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()), // Substitua 'LoginPage' pela sua página real
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    checkFirstTimeUser();
-      super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
       splash: Image.asset('assets/images/splashscreen.png',
       fit: BoxFit.cover,),
       splashIconSize: MediaQuery.of(context).size.height,
-      nextScreen: isFirstTimeUser ? OnBoardingPage() : const AuthCheck(),
+      nextScreen: const AuthCheck(),
       splashTransition: SplashTransition.sizeTransition,
     );
   }

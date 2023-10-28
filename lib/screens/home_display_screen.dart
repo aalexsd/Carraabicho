@@ -170,12 +170,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   margin: EdgeInsets.all(5),
                                   padding: const EdgeInsets.all(10.0),
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/images/carteira.jpeg',
-                                        ),
-                                        fit: BoxFit.fill,
-                                      ),
+
                                       color: Colors.indigo,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
@@ -228,12 +223,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   margin: EdgeInsets.all(5),
                                   padding: const EdgeInsets.all(10.0),
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/images/CUPOM.png',
-                                        ),
-                                        fit: BoxFit.fill,
-                                      ),
+
                                       color: Colors.indigo,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.0),
@@ -260,12 +250,6 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                             margin: EdgeInsets.all(5),
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/ULTIMASCOMPRAS.png',
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
                                 color: Colors.indigo,
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 class ImageCarousel extends StatelessWidget {
   final List<String> images = [
-    'assets/images/vetbonito.avif',
-    'assets/images/petbonito.avif',
-    'assets/images/petbonito2.avif',
-    'assets/images/cuidadorbonito.avif',
+    'assets/images/cuidador1.jpeg',
+    'assets/images/veterinario.jpeg',
+    'assets/images/adestrador1.jpeg',
   ];
 
   @override

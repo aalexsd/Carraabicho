@@ -19,7 +19,6 @@ class _AuthCheckState extends State<AuthCheck> {
   @override
   void initState() {
     super.initState();
-    // checkFirstTimeUser();
   }
 
   @override
