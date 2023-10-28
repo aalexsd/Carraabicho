@@ -124,7 +124,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Senha',
                                         contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
+                                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
