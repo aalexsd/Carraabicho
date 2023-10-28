@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../data/via_cep_service.dart';
+import '../models/result_pessoa.dart';
 
 class SignUpPage3 extends StatefulWidget {
   SignUpPage3({super.key});
@@ -123,8 +124,8 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.lock),
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Senha',
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 10),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
@@ -199,128 +200,133 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                 ],
                               )
                             : Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24),
-                                  child: DropdownSearch<String>(
-                                    popupProps: PopupProps.menu(
-                                      fit: FlexFit.tight,
-                                      showSelectedItems: true,
-                                      showSearchBox: false,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24),
+                                    child: DropdownSearch<String>(
+                                      popupProps: PopupProps.menu(
+                                        fit: FlexFit.tight,
+                                        showSelectedItems: true,
+                                        showSearchBox: false,
+                                      ),
+                                      items: Profissaorepository.listProfissao,
+                                      dropdownDecoratorProps:
+                                          DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          prefixIcon: Icon(Icons.shopping_bag),
+                                          hintText: 'Tipo de Prestador',
+                                          labelText: 'Tipo de Prestador',
+                                          contentPadding:
+                                              EdgeInsets.symmetric(vertical: 8),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Selecione o Tipo de Serviço';
+                                        }
+                                        return null; // Retorna null se o campo estiver preenchido corretamente
+                                      },
                                     ),
-                                    items: Profissaorepository.listProfissao,
-                                    dropdownDecoratorProps:
-                                    DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 12),
+                                    child: TextFormField(
+                                      obscureText: !showPassword,
+                                      controller: senha,
+                                      decoration: InputDecoration(
                                         border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.shopping_bag),
-                                        hintText: 'Tipo de Prestador',
-                                        labelText: 'Tipo de Prestador',
+                                        prefixIcon: Icon(Icons.lock),
+                                        hintText: 'Digite sua Senha',
+                                        labelText: 'Senha',
                                         contentPadding:
-                                        EdgeInsets.symmetric(vertical: 8),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Selecione o Tipo de Serviço';
-                                      }
-                                      return null; // Retorna null se o campo estiver preenchido corretamente
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, top: 12),
-                                  child: TextFormField(
-                                    obscureText: !showPassword,
-                                    controller: senha,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.lock),
-                                      hintText: 'Digite sua Senha',
-                                      labelText: 'Senha',
-                                      contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8),
-                                      suffixIcon: InkWell(
-                                        onTap: _togglePasswordVisibility,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 12.0,
-                                              right: 12,
-                                              bottom: 12),
-                                          child: Text(
-                                            showPassword
-                                                ? 'Ocultar'
-                                                : 'Exibir',
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        suffixIcon: InkWell(
+                                          onTap: _togglePasswordVisibility,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 12.0,
+                                                right: 12,
+                                                bottom: 12),
+                                            child: Text(
+                                              showPassword
+                                                  ? 'Ocultar'
+                                                  : 'Exibir',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Informa sua senha!';
+                                        } else if (value.length < 6) {
+                                          return 'Sua senha deve ter no mínimo 6 caracteres';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Informa sua senha!';
-                                      } else if (value.length < 6) {
-                                        return 'Sua senha deve ter no mínimo 6 caracteres';
-                                      }
-                                      return null;
-                                    },
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, top: 12),
-                                  child: TextFormField(
-                                    obscureText: !showPassword,
-                                    controller: confirmasenha,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.lock),
-                                      hintText: 'Digite sua Senha',
-                                      labelText: 'Confirme sua senha',
-                                      contentPadding:
-                                      EdgeInsets.symmetric(vertical: 8),
-                                      suffixIcon: InkWell(
-                                        onTap: _togglePasswordVisibility,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 12.0,
-                                              right: 12,
-                                              bottom: 12),
-                                          child: Text(
-                                            showPassword
-                                                ? 'Ocultar'
-                                                : 'Exibir',
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 12),
+                                    child: TextFormField(
+                                      obscureText: !showPassword,
+                                      controller: confirmasenha,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.lock),
+                                        hintText: 'Digite sua Senha',
+                                        labelText: 'Confirme sua senha',
+                                        contentPadding:
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        suffixIcon: InkWell(
+                                          onTap: _togglePasswordVisibility,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 12.0,
+                                                right: 12,
+                                                bottom: 12),
+                                            child: Text(
+                                              showPassword
+                                                  ? 'Ocultar'
+                                                  : 'Exibir',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Informa sua senha!';
+                                        } else if (value.length < 6) {
+                                          return 'Sua senha deve ter no mínimo 6 caracteres';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Informa sua senha!';
-                                      } else if (value.length < 6) {
-                                        return 'Sua senha deve ter no mínimo 6 caracteres';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                )
-
-                              ],
-                            ),
+                                  )
+                                ],
+                              ),
                         Padding(
                           padding: const EdgeInsets.only(
                               top: 10.0, bottom: 5, left: 24, right: 24),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+
+                              }
+                              print(user.cep);
+                            },
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.black,
                             ),
