@@ -135,9 +135,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                           alignment: Alignment.center,
                                           colorFilter: ColorFilter.mode(
                                             Colors.black.withOpacity(
-                                                0.4), // Ajuste a opacidade conforme necessário
+                                                0.4),
                                             BlendMode
-                                                .darken, // Isso escurecerá a imagem
+                                                .darken,
                                           ),
                                         ),
                                         color: Colors.indigo,
@@ -189,9 +189,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                     alignment: Alignment.center,
                                     colorFilter: ColorFilter.mode(
                                       Colors.black.withOpacity(
-                                          0.4), // Ajuste a opacidade conforme necessário
+                                          0.4),
                                       BlendMode
-                                          .darken, // Isso escurecerá a imagem
+                                          .darken,
                                     ),
                                   ),
                                   color: Colors.indigo,
@@ -267,9 +267,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                               alignment: Alignment.center,
                               colorFilter: ColorFilter.mode(
                                 Colors.black.withOpacity(
-                                    0.4), // Ajuste a opacidade conforme necessário
+                                    0.4),
                                 BlendMode
-                                    .darken, // Isso escurecerá a imagem
+                                    .darken,
                               ),
                             ),
                             color: Colors.indigo,
@@ -319,9 +319,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                               alignment: Alignment.center,
                               colorFilter: ColorFilter.mode(
                                 Colors.black.withOpacity(
-                                    0.4), // Ajuste a opacidade conforme necessário
+                                    0.4),
                                 BlendMode
-                                    .darken, // Isso escurecerá a imagem
+                                    .darken,
                               ),
                             ),
                             color: Colors.indigo,
