@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../screens/chat.page.dart';
+import '../screens/login_page.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -51,7 +52,10 @@ class _MenuState extends State<Menu> {
           ),
           GestureDetector(
             onTap: () {
-              signOutGoogle().then((value) => Navigator.pop(context));
+              signOutGoogle().then((value) =>   Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              ));
               FirebaseAuth.instance.signOut();
             },
             child: ListTile(

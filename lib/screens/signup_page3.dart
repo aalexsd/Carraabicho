@@ -10,22 +10,26 @@ import '../models/result_pessoa.dart';
 class SignUpPage3 extends StatefulWidget {
   SignUpPage3({super.key});
 
-  bool _loading = false;
-  String? resultado;
-
   @override
   State<SignUpPage3> createState() => _SignUpPage3State();
 }
 
 class _SignUpPage3State extends State<SignUpPage3> {
   final _formKey = GlobalKey<FormState>();
+  final senha = TextEditingController();
+  final email = TextEditingController();
+  final confirmasenha = TextEditingController();
+
   bool loading = false;
   bool tipoUsuario = true;
   var usuarioSelecionado;
   bool showPassword = false;
-  final senha = TextEditingController();
-  final confirmasenha = TextEditingController();
   String? selectedProfissao;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -36,7 +40,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
   registrar() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().registrar(user.email, user.senha);
+      await context.read<AuthService>().registrar(email.text, senha.text, context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
@@ -126,6 +130,28 @@ class _SignUpPage3State extends State<SignUpPage3> {
                         (tipoUsuario)
                             ? Column(
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 12),
+                                    child: TextFormField(
+                                      controller: email,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.email),
+                                        hintText: 'Digite seu E-mail',
+                                        labelText: 'Email',
+                                        contentPadding:
+                                        EdgeInsets.symmetric(vertical: 8),
+                                      ),
+                                      keyboardType: TextInputType.emailAddress,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Informe o email corretamente!';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 24, right: 24, top: 12),
@@ -254,6 +280,28 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     padding: const EdgeInsets.only(
                                         left: 24, right: 24, top: 12),
                                     child: TextFormField(
+                                      controller: email,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.email),
+                                        hintText: 'Digite seu E-mail',
+                                        labelText: 'Email',
+                                        contentPadding:
+                                        EdgeInsets.symmetric(vertical: 8),
+                                      ),
+                                      keyboardType: TextInputType.emailAddress,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Informe o email corretamente!';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 24, right: 24, top: 12),
+                                    child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: senha,
                                       decoration: InputDecoration(
@@ -350,9 +398,8 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                       backgroundColor: Colors.red,
                                     ),
                                   );
-                                } else {
-                                  registrar();
                                 }
+                                registrar();
                               }
                             },
                             style: OutlinedButton.styleFrom(

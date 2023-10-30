@@ -6,7 +6,6 @@ import '../widgets/auth_check.dart';
 import '../widgets/onboarding.dart';
 import 'login_page.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -15,8 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     final textsplash = Stack(
@@ -56,7 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 )
               ],
             ),
-
           ],
         ),
         Align(
@@ -78,8 +74,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return AnimatedSplashScreen(
       backgroundColor: Colors.white,
-      splash: Image.asset('assets/images/splashscreen.png',
-      fit: BoxFit.cover,),
+      splash: Image.asset(
+        'assets/images/splashscreen.png',
+        fit: BoxFit.cover,
+      ),
       splashIconSize: MediaQuery.of(context).size.height,
       nextScreen: const AuthCheck(),
       splashTransition: SplashTransition.sizeTransition,

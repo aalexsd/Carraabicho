@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:Carrrabicho/screens/forgot_password_page.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/login_page.dart';
@@ -5,11 +6,33 @@ import 'package:Carrrabicho/screens/signup_page2.dart';
 import 'package:Carrrabicho/screens/signup_page3.dart';
 import 'package:Carrrabicho/screens/splash_screen.dart';
 import 'package:Carrrabicho/widgets/auth_check.dart';
+import 'package:Carrrabicho/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+class MeuAplicativo extends StatefulWidget {
+  MeuAplicativo({super.key});
 
-class MeuAplicativo extends StatelessWidget {
-  const MeuAplicativo({super.key});
+  @override
+  State<MeuAplicativo> createState() => _MeuAplicativoState();
+}
+
+class _MeuAplicativoState extends State<MeuAplicativo> {
+  bool isFirstTime = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkFirstTime();
+  }
+
+  void checkFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    final onboardingDone = prefs.getBool('onboarding_done');
+    setState(() {
+      isFirstTime = onboardingDone == null ? true : !onboardingDone;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +54,8 @@ class MeuAplicativo extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      title: 'Monitora Orgânico',
-      initialRoute: '/splash',
+      title: 'Carrabicho',
+      initialRoute: isFirstTime ? '/onboarding' : '/splash',
       routes: {
         '/': (context) => const AuthCheck(),
         '/splash': (context) => const SplashScreen(),
@@ -41,8 +64,7 @@ class MeuAplicativo extends StatelessWidget {
         '/forgot_password': (context) => const ForgotPasswordPage(),
         '/signup2': (context) => SignUpPage2(),
         '/signup3': (context) => SignUpPage3(),
-        // '/edit_profile': (context) => const EditProfileScreen(),
-        // 'verify_email': (context) => const VerifyEmailScreen(),
+        '/onboarding': (context) => OnBoardingPage(),
       },
     );
   }

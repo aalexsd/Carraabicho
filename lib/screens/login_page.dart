@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   final senha = TextEditingController();
 
   bool isLogin = true;
-  bool isUsuario = true;
   late String titulo;
   late String subtitulo;
   late String actionButton;
@@ -67,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   registrar() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().registrar(email.text, senha.text);
+      await context.read<AuthService>().registrar(email.text, senha.text, context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
