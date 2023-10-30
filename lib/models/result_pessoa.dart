@@ -12,7 +12,7 @@ class ResultPessoa {
   String? cpf;
   String? nome;
   String? codigo;
-  String? email;
+  String email;
   String? nasc;
   String? celular;
   String? sexo;
@@ -23,7 +23,7 @@ class ResultPessoa {
   String? bairro;
   String? cidade;
   String? uf;
-  String? senha;
+  String senha;
   String? tipoServico;
 
   ResultPessoa(

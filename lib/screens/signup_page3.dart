@@ -36,7 +36,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
   registrar() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().registrar(user.email.toString(), user.senha.toString());
+      await context.read<AuthService>().registrar(user.email, user.senha);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
