@@ -69,9 +69,11 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
           ),
           iconTheme: const IconThemeData(color: Colors.black),
         ),
+
         //creates a side screen
         drawer: Menu(),
-        body: Column(
+        body:
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -122,38 +124,49 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                       );
                                     },
                                     child: Container(
-                                        height: screenHeight / 6,
-                                        width: screenW / 2 - 28,
-                                        // margin:
-                                        //     EdgeInsets.symmetric(horizontal: 3),
-                                        // padding: const EdgeInsets.all(5.0),
-                                        // decoration: BoxDecoration(
-                                        //   color: Colors.grey.shade300,
-                                        //   borderRadius: BorderRadius.all(
-                                        //       Radius.circular(5.0)),
-                                        // ),
-
-                                        margin: EdgeInsets.all(5),
+                                      height: screenHeight / 6,
+                                      width: screenW / 2 - 28,
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/veterinario.jpg'),
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                          colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(
+                                                0.4),
+                                            BlendMode
+                                                .darken,
+                                          ),
+                                        ),
+                                        color: Colors.indigo,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      child: Padding(
                                         padding: const EdgeInsets.all(10.0),
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                'assets/images/.avif',
-                                              ),
-                                              fit: BoxFit.fill,
-                                            ),
-                                            color: Colors.indigo,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0),
-                                            )),
                                         child: Center(
                                           child: Text(
                                             'Veterinários',
-                                            style: TextStyle(fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              shadows: [
+                                                Shadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 4,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        )),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                             GestureDetector(
                               onTap: () {
@@ -165,24 +178,49 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                 );
                               },
                               child: Container(
-                                  height: screenHeight / 6,
-                                  width: screenW / 2 - 28,
-                                  margin: EdgeInsets.all(5),
+                                height: screenHeight / 6,
+                                width: screenW / 2 - 28,
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/cuidador2.jpeg'),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                    colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(
+                                          0.4),
+                                      BlendMode
+                                          .darken,
+                                    ),
+                                  ),
+                                  color: Colors.indigo,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.0),
+                                  ),
+                                ),
+                                child: Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-
-                                      color: Colors.indigo,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      )),
                                   child: Center(
                                     child: Text(
                                       'Cuidadores',
-                                      style: TextStyle(fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black
+                                                .withOpacity(0.5),
+                                            offset: Offset(2, 2),
+                                            blurRadius: 4,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  )),
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(
                               height: 17,
@@ -217,25 +255,50 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                         builder: (context) =>
                                             AdestradorScreen()));
                               },
-                              child: Container(
-                                  height: screenHeight / 6,
-                                  width: screenW / 2 - 28,
-                                  margin: EdgeInsets.all(5),
-                                  padding: const EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-
-                                      color: Colors.indigo,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      )),
-                                  child: Center(
-                                    child: Text(
-                                      'Adestradores',
-                                      style: TextStyle(fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                        child: Container(
+                          height: screenHeight / 6,
+                          width: screenW / 2 - 28,
+                          margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/adestrador1.jpeg'),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(
+                                    0.4),
+                                BlendMode
+                                    .darken,
+                              ),
+                            ),
+                            color: Colors.indigo,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Center(
+                              child: Text(
+                                'Adestradores',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black
+                                          .withOpacity(0.5),
+                                      offset: Offset(2, 2),
+                                      blurRadius: 4,
                                     ),
-                                  )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                             ),
                       GestureDetector(
                         onTap: () {
@@ -245,23 +308,49 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                   builder: (context) => AdestradorScreen()));
                         },
                         child: Container(
-                            height: screenHeight / 6,
-                            width: screenW / 2 - 28,
-                            margin: EdgeInsets.all(5),
+                          height: screenHeight / 6,
+                          width: screenW / 2 - 28,
+                          margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/hotel4.jpg'),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(
+                                    0.4),
+                                BlendMode
+                                    .darken,
+                              ),
+                            ),
+                            color: Colors.indigo,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                          child: Padding(
                             padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                                color: Colors.indigo,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                )),
                             child: Center(
                               child: Text(
-                                'Hotéis',
-                                style: TextStyle(fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                'Hotel',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black
+                                          .withOpacity(0.5),
+                                      offset: Offset(2, 2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -285,6 +374,5 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
           ],
         ));
   }
-
 }
 //
