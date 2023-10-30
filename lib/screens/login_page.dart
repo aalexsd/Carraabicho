@@ -154,78 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                 letterSpacing: -1),
                           ),
                           if (!isLogin)
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Radio<bool>(
-                                      value: true,
-                                      groupValue: isUsuario,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isUsuario = value!;
-                                        });
-                                      },
-                                    ),
-                                    const Text(
-                                      'Sou usuário',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Radio<bool>(
-                                      value: false,
-                                      groupValue: isUsuario,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isUsuario = value!;
-                                        });
-                                      },
-                                    ),
-                                    const Text(
-                                      'Sou prestador de Serviço',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          if (!isLogin && isUsuario) GeneralSignUp(),
-                          if (!isLogin && !isUsuario)
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24),
-                                  child: DropdownSearch<String>(
-                                    popupProps: PopupProps.menu(
-                                      fit: FlexFit.tight,
-                                      showSelectedItems: true,
-                                      showSearchBox: false,
-                                    ),
-                                    items: Profissaorepository.listProfissao,
-                                    dropdownDecoratorProps:
-                                        DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.shopping_bag),
-                                        hintText: 'Tipo de Prestador',
-                                        labelText: 'Tipo de Prestador',
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Selecione o Tipo de Serviço';
-                                      }
-                                      return null; // Retorna null se o campo estiver preenchido corretamente
-                                    },
-                                  ),
-                                ),
-                                GeneralSignUp(),
-                              ],
-                            ),
+                            GeneralSignUp(),
                           if (isLogin)
                             Column(
                               children: [

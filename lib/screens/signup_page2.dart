@@ -1,4 +1,7 @@
+import 'package:Carrrabicho/models/result_pessoa.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import '../data/via_cep_service.dart';
 
@@ -18,7 +21,6 @@ class SignUpPage2 extends StatefulWidget {
 }
 
 class _SignUpPage2State extends State<SignUpPage2> {
-
   final _formKey = GlobalKey<FormState>();
   var cep = '';
   var ende = '';
@@ -48,36 +50,42 @@ class _SignUpPage2State extends State<SignUpPage2> {
                 SizedBox(
                     height: 120,
                     width: 120,
-                    child: Image.asset('assets/images/logo.png',
-                      fit: BoxFit.contain,)),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.contain,
+                    )),
                 Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(1),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: Offset(0, 4), // changes position of shadow
+                  child: Flexible(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(1),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(0, 4), // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.0),
                         ),
-                      ],
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12.0),
                       ),
-                    ),
-                    height: screenH * .7,
-                    width: screenW * .88,
-                    margin: EdgeInsets.symmetric(horizontal: 3),
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      children: [
+                      width: screenW * .88,
+                      margin: EdgeInsets.symmetric(horizontal: 3),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(children: [
                         SizedBox(
                           height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 24.0, left: 24),
                           child: TextFormField(
+                            inputFormatters: [
+                              // obrigatório
+                              FilteringTextInputFormatter.digitsOnly,
+                              CepInputFormatter()
+                            ],
                             textInputAction: TextInputAction.next,
                             // autofocus: true,
                             controller: widget._searchCepController,
@@ -88,16 +96,28 @@ class _SignUpPage2State extends State<SignUpPage2> {
                               suffixIcon: widget._loading
                                   ? CircularProgressIndicator()
                                   : IconButton(
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  _searchCep();
-                                },
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        _searchCep();
+                                      },
+                                    ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                user.cep = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Informa o CEP!';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         SizedBox(
@@ -113,7 +133,8 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Endereço",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                           ),
                         ),
@@ -130,12 +151,18 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Bairro",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                user.endereco = value;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
@@ -151,12 +178,18 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Cidade",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                user.cidade = value;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
@@ -172,12 +205,18 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Estado",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                user.uf = value;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
@@ -191,12 +230,18 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Complemento (Apto / Bloco / Casa)",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                user.complemento = value;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
@@ -210,12 +255,24 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Número",
                               border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 5),
                             ),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Informa o Número!';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                user.numero = value;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(
@@ -226,7 +283,9 @@ class _SignUpPage2State extends State<SignUpPage2> {
                               top: 10.0, bottom: 5, left: 24, right: 24),
                           child: ElevatedButton(
                             onPressed: () {
-
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.pushNamed(context, '/signup3');
+                              }
                             },
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.black,
@@ -235,38 +294,39 @@ class _SignUpPage2State extends State<SignUpPage2> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: (loading)
                                   ? [
-                                const Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )
-                              ]
+                                      const Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    ]
                                   : [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Prosseguir',
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Prosseguir',
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
                             ),
                           ),
                         ),
-                        ElevatedButton(onPressed: (){
-                          Navigator.pop(context);
-                        },
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                           ),
                           child: Text('Voltar'),
                         )
-                      ]
+                      ]),
                     ),
                   ),
                 ),
@@ -301,7 +361,4 @@ class _SignUpPage2State extends State<SignUpPage2> {
 
     widget._loading = false;
   }
-
-
-
 }

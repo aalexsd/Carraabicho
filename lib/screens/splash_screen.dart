@@ -1,7 +1,10 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/auth_check.dart';
+import '../widgets/onboarding.dart';
+import 'login_page.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -12,6 +15,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     final textsplash = Stack(

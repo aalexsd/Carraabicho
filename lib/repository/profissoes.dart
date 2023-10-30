@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 class Profissaorepository {
   static var listProfissao = [
     "Adestrador",
+    "Cuidador",
     "Hotel",
     "Veterinário",
   ];

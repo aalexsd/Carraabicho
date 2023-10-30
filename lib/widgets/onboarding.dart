@@ -64,20 +64,20 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       //     ),
       //   ),
       // ),
-      globalFooter: SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.indigo
-          ),
-          child: const Text(
-            'Vamos lá!',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () => _onIntroEnd(context),
-        ),
-      ),
+      // globalFooter: SizedBox(
+      //   width: double.infinity,
+      //   height: 60,
+      //   child: ElevatedButton(
+      //     style: ElevatedButton.styleFrom(
+      //       backgroundColor: Colors.indigo
+      //     ),
+      //     child: const Text(
+      //       'Vamos lá!',
+      //       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+      //     ),
+      //     onPressed: () => _onIntroEnd(context),
+      //   ),
+      // ),
       pages: [
         PageViewModel(
           title: "Quem Somos",

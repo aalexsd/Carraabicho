@@ -2,6 +2,7 @@ import 'package:Carrrabicho/screens/forgot_password_page.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/login_page.dart';
 import 'package:Carrrabicho/screens/signup_page2.dart';
+import 'package:Carrrabicho/screens/signup_page3.dart';
 import 'package:Carrrabicho/screens/splash_screen.dart';
 import 'package:Carrrabicho/widgets/auth_check.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class MeuAplicativo extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/forgot_password': (context) => const ForgotPasswordPage(),
         '/signup2': (context) => SignUpPage2(),
+        '/signup3': (context) => SignUpPage3(),
         // '/edit_profile': (context) => const EditProfileScreen(),
         // 'verify_email': (context) => const VerifyEmailScreen(),
       },
