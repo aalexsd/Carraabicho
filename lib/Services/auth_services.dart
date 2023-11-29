@@ -1,3 +1,4 @@
+import 'package:Carrrabicho/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class AuthService extends ChangeNotifier {
       _getUser();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => LoginPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {

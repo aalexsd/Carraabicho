@@ -92,7 +92,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                           Radius.circular(12.0),
                         ),
                       ),
-                      width: screenW * .88,
+                      width: screenW * .9,
                       margin: EdgeInsets.symmetric(horizontal: 3),
                       padding: const EdgeInsets.all(5.0),
                       child: Column(children: [
