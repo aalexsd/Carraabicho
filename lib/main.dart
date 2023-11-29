@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Carrrabicho/Utils/auth_screen.dart';
 import 'package:Carrrabicho/Utils/utils.dart';
 import 'package:Carrrabicho/meu_aplicativo.dart';
@@ -12,8 +14,17 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-  );
+  
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: "AIzaSyBdJIJrq1s-uKAELE645-q12SakkhpdFo8",
+            appId: "1:460612349374:ios:0d373616def2bf40ea9def",
+            messagingSenderId: "460612349374",
+            projectId: "carrabicho-projeto"));
+  } else {
+    await Firebase.initializeApp();
+  }
 
   runApp(MultiProvider(
     providers: [
