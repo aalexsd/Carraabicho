@@ -1,4 +1,5 @@
 import 'package:Carrrabicho/screens/edit_profile_screen.dart';
+import 'package:Carrrabicho/screens/login_page.dart';
 import 'package:Carrrabicho/widgets/block_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -91,10 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: BlockButton(
                   label: 'Edital Perfil',
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EditProfileScreen(
-                            updateDisplayName: updateDisplayName,
-                            displayName: displayName)));
+                    Navigator.pushNamed(context, '/bluetooth');
                   },
                 ),
               ),
@@ -105,6 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: () {
                   context.read<AuthService>().logout();
                   signOutGoogle();
+                  sair(context);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(
@@ -128,6 +127,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  sair(BuildContext context) {
+  // var bloc = Provider.of<UserBloc>(context);
+  //var res = await bloc.create(user);
+
+  if (true) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
+  }
+}
 
   Future<void> signOutGoogle() async {
     await GoogleSignIn().signOut();

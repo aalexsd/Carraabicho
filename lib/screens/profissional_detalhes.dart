@@ -137,11 +137,11 @@ class _ProfissionalDetalhesState extends State<ProfissionalDetalhes> {
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.only(top: 24),
               child: Center(
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: screenW * .35,
+                      width: screenW * .5,
                       child: ElevatedButton(
                           onPressed: () {
                             comprar();
@@ -155,7 +155,7 @@ class _ProfissionalDetalhesState extends State<ProfissionalDetalhes> {
                           )),
                     ),
                     SizedBox(
-                      width: 10,
+                      height: 10,
                     ),
                     SizedBox(
                       width: screenW * .5,

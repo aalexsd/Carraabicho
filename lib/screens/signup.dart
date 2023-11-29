@@ -56,21 +56,25 @@ class _GeneralSignUpState extends State<GeneralSignUp> {
             controller: email,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.email),
-              hintText: 'Digite seu E-mail',
-              labelText: 'Email',
+              prefixIcon: Icon(Icons.app_registration),
+              hintText: 'Digite seu CPF',
+              labelText: 'CPF',
               contentPadding: EdgeInsets.symmetric(vertical: 8),
             ),
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CpfInputFormatter(),
+                ],
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Informe o email corretamente!';
+                return 'Informe o CPF!';
               }
               return null;
             },
             onChanged: (value){
               setState(() {
-                user.email = value;
+                user.cpf = value;
               });
             },
           ),
