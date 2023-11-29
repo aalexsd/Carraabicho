@@ -36,6 +36,12 @@ class AuthService extends ChangeNotifier {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
       _getUser();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Usuário criado com sucesso!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => LoginPage(),
