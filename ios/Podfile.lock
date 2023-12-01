@@ -814,6 +814,8 @@ PODS:
     - Flutter
     - FlutterMacOS
   - SwiftProtobuf (1.25.1)
+  - "webview_pro_wkwebview (2.7.1+1)":
+    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -827,6 +829,7 @@ DEPENDENCIES:
   - reactive_ble_mobile (from `.symlinks/plugins/reactive_ble_mobile/ios`)
   - search_choices (from `.symlinks/plugins/search_choices/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - webview_pro_wkwebview (from `.symlinks/plugins/webview_pro_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
@@ -878,6 +881,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/search_choices/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  webview_pro_wkwebview:
+    :path: ".symlinks/plugins/webview_pro_wkwebview/ios"
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
@@ -915,6 +920,7 @@ SPEC CHECKSUMS:
   search_choices: b50731e8c425078048f681f39c34375c58d6ce8d
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   SwiftProtobuf: 69f02cd54fb03201c5e6bf8b76f687c5ef7541a3
+  webview_pro_wkwebview: 38019db9fcfb544f91e1b0e46b11af71a42b6d2c
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
 

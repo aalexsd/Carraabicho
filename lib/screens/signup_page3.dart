@@ -1,4 +1,5 @@
 import 'package:Carrrabicho/repository/profissoes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +48,44 @@ class _SignUpPage3State extends State<SignUpPage3> {
           .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
+
+    saveAll() async {
+    // Criar uma instância do Firestore
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Criar um documento no Firestore
+    DocumentReference docRef = firestore.collection('usuarios').doc();
+
+
+    // Definir os dados a serem salvos
+    Map<String, dynamic> data = {
+      'nome': user.nome,
+      'cpf': user.cpf,
+      'email': user.email,
+      'telefone': user.celular,
+      'cep': user.cep,
+      'rua': user.endereco,
+      'bairro': user.bairro,
+      'cidade': user.cidade,
+      'estado': user.uf,
+      'complemento': user.complemento,
+      'numero': user.numero,
+      'profissao': user.tipoServico,
+
+      // Adicione outros campos aqui com os respectivos valores
+    };
+
+    // Salvar os dados no Firestore
+    try {
+      await docRef.set(data);
+      //print('Dados salvos com sucesso!');
+    } catch (e) {
+      //print('Erro ao salvar os dados: $e');
+    }
+  }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -399,6 +438,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     ),
                                   );
                                 }
+                                saveAll();
                                 registrar();
                               }
                             },
