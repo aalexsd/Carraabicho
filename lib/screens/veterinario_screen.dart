@@ -17,7 +17,7 @@ class VeterinarioScreen extends StatefulWidget {
 class _VeterinarioScreenState extends State<VeterinarioScreen> {
   int currentIndex = 0;
   final controller = SwipableStackController();
-  final tabela = ProfissionalRepository.tabela;
+  final tabela = VeterinarioRepository.tabela;
   var imageList = [
     'assets/images/veterinario1.jpeg',
     'assets/images/veterinario.jpeg',

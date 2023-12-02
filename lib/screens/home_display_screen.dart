@@ -1,3 +1,4 @@
+import 'package:Carrrabicho/screens/hotel_display.dart';
 import 'package:Carrrabicho/screens/veterinario_screen.dart';
 import 'package:Carrrabicho/widgets/image_carousel.dart';
 import 'package:Carrrabicho/widgets/sidemenu.dart';
@@ -151,7 +152,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                           child: Text(
                                             'Veterinários',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 21,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                               shadows: [
@@ -205,7 +206,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                                     child: Text(
                                       'Cuidadores',
                                       style: TextStyle(
-                                        fontSize: 24,
+                                        fontSize: 21,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         shadows: [
@@ -282,8 +283,9 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                             child: Center(
                               child: Text(
                                 'Adestradores',
+                                maxLines: 1,
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   shadows: [
@@ -305,7 +307,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AdestradorScreen()));
+                                  builder: (context) => HotelScreen()));
                         },
                         child: Container(
                           height: screenHeight / 6,
@@ -335,7 +337,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                               child: Text(
                                 'Hotel',
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   shadows: [

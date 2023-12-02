@@ -7,17 +7,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:swipable_stack/swipable_stack.dart';
 
-class AdestradorScreen extends StatefulWidget {
-  const AdestradorScreen({super.key});
+class HotelScreen extends StatefulWidget {
+  const HotelScreen({super.key});
 
   @override
-  State<AdestradorScreen> createState() => _AdestradorScreenState();
+  State<HotelScreen> createState() => _HotelScreenState();
 }
 
-class _AdestradorScreenState extends State<AdestradorScreen> {
+class _HotelScreenState extends State<HotelScreen> {
   int currentIndex = 0;
   final controller = SwipableStackController();
-  final tabela = AdestradorRepository.tabela;
+  final tabela = HotelRepository.tabela;
   var imageList = [
     'assets/images/cuidadorbonito.avif',
     'assets/images/cuidadorbonito.avif',
@@ -30,7 +30,7 @@ class _AdestradorScreenState extends State<AdestradorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adestradores'),
+        title: const Text('Hoteis'),
         elevation: 1,
       ),
       body: ListView.separated(
