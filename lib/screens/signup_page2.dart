@@ -353,9 +353,13 @@ class _SignUpPage2State extends State<SignUpPage2> {
     } else {
       setState(() {
         widget._endeController.text = resultCep.logradouro ?? '';
+        user.endereco = resultCep.logradouro ?? '';
         widget._bairroController.text = resultCep.bairro ?? '';
+        user.bairro = resultCep.bairro ?? '';
         widget._cidadeController.text = resultCep.localidade ?? '';
+        user.cidade = resultCep.localidade ?? '';
         widget._ufController.text = resultCep.uf ?? '';
+        user.uf = resultCep.uf ?? '';
       });
     }
 
