@@ -7,12 +7,21 @@ class IDUser {
   String cpf = '';
 }
 
+class ParCompra {
+  String cupom = '';
+  String nome = '';
+  String email = '';
+  String cpf = '';
+}
+
+ParCompra parCompra = new ParCompra();
+
 class ResultPessoa {
   int? id;
   String? cpf;
   String? nome;
   String? codigo;
-  String email;
+  String? email;
   String? nasc;
   String? celular;
   String? sexo;
@@ -23,67 +32,80 @@ class ResultPessoa {
   String? bairro;
   String? cidade;
   String? uf;
-  String senha;
-  String? tipoServico;
+  String? ibge;
+  String? senha;
+  String? sobrenome;
 
-  ResultPessoa(
-      {required this.id,
-      required this.cpf,
-      required this.nome,
-      required this.codigo,
-      required this.email,
-      required this.nasc,
-      required this.celular,
-      required this.sexo,
-      required this.cep,
-      required this.endereco,
-      required this.numero,
-      required this.complemento,
-      required this.bairro,
-      required this.cidade,
-      required this.senha,
-      required this.tipoServico,
-      required this.uf,});
+
+  ResultPessoa({
+    this.id,
+    this.cpf,
+    this.nome,
+    this.codigo,
+    this.email,
+    this.nasc,
+    this.celular,
+    this.sexo,
+    this.cep,
+    this.endereco,
+    this.numero,
+    this.complemento,
+    this.bairro,
+    this.cidade,
+    this.uf,
+    this.ibge,
+    this.senha,
+    this.sobrenome,
+  });
   factory ResultPessoa.fromJson(Map<String, dynamic> json) => ResultPessoa(
-      id: json["id"],
-      cpf: json["cpf"],
-      nome: json["nome"],
-      codigo: json["codigo"],
-      email: json["email"],
-      nasc: json["nasc"],
-      celular: json["celular"],
-      sexo: json["sexo"],
-      cep: json["cep"],
-      endereco: json["endereco"],
-      numero: json["numero"],
-      complemento: json["complemento"],
-      bairro: json["bairro"],
-      cidade: json["cidade"],
-      senha: json["senha"],
-      tipoServico: json["tipoServico"],
-      uf: json["uf"],);
+        id: json["id"],
+        cpf: json["cpf"],
+        nome: json["nome"],
+        codigo: json["codigo"],
+        email: json["email"],
+        nasc: json["nasc"],
+        celular: json["celular"],
+        sexo: json["sexo"],
+        cep: json["cep"],
+        endereco: json["endereco"],
+        numero: json["numero"],
+        complemento: json["complemento"],
+        bairro: json["bairro"],
+        cidade: json["cidade"],
+        uf: json["uf"],
+        ibge: json["ibge"],
+        senha: json["senha"],
+        sobrenome: json["sobrenome"],
+      );
 
+//factory ResultPessoa.fromJson(String str) =>
+  //ResultPessoa.fromMap(json.decode(str));
+
+//factory ResultPessoa.fromJson(String str) =>
+  //     ResultPessoa.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   factory ResultPessoa.fromMap(Map<String, dynamic> json) => ResultPessoa(
-      id: json["id"],
-      cpf: json["cpf"],
-      nome: json["nome"],
-      codigo: json["codigo"],
-      email: json["email"],
-      nasc: json["nasc"],
-      celular: json["celular"],
-      sexo: json["sexo"],
-      cep: json["cep"],
-      endereco: json["endereco"],
-      numero: json["numero"],
-      complemento: json["complemento"],
-      bairro: json["bairro"],
-      cidade: json["cidade"],
-      senha: json["senha"],
-      tipoServico: json["tipoServico"],
-      uf: json["uf"],);
+        id: json["id"],
+        cpf: json["cpf"],
+        nome: json["nome"],
+        codigo: json["codigo"],
+        email: json["email"],
+        nasc: json["nasc"],
+        celular: json["celular"],
+        sexo: json["sexo"],
+        cep: json["cep"],
+        endereco: json["endereco"],
+        numero: json["numero"],
+        complemento: json["complemento"],
+        bairro: json["bairro"],
+        cidade: json["cidade"],
+        uf: json["uf"],
+        ibge: json["ibge"],
+        senha: json["senha"],
+        sobrenome: json["sobrenome"],
+      );
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -100,10 +122,11 @@ class ResultPessoa {
         "complemento": complemento,
         "bairro": bairro,
         "cidade": cidade,
-        "senha": senha,
-        "tipoServico": tipoServico,
         "uf": uf,
+        "ibge": ibge,
+        "senha": senha,
+         "sobrenome": sobrenome,
       };
 }
 
-ResultPessoa user = ResultPessoa(id: 0, cpf: '', nome: '', codigo: '', email: '', nasc: '', celular: '', sexo: '', cep: '', endereco: '', numero: '', complemento: '', bairro: '', cidade: '', uf: '', senha: '', tipoServico: '');
+ResultPessoa user = new ResultPessoa();

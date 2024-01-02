@@ -52,11 +52,12 @@ class _MenuState extends State<Menu> {
           ),
           GestureDetector(
             onTap: () {
-              signOutGoogle().then((value) =>   Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              ));
-              FirebaseAuth.instance.signOut();
+              sair(context);
+              // signOutGoogle().then((value) =>   Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LoginPage()),
+              // ));
+              // FirebaseAuth.instance.signOut();
             },
             child: ListTile(
               title: Row(
@@ -83,5 +84,19 @@ class _MenuState extends State<Menu> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Logout realizado com sucesso')),
     );
+  }
+
+    sair(BuildContext context) {
+    // var bloc = Provider.of<UserBloc>(context);
+    //var res = await bloc.create(user);
+
+    if (true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+    }
   }
 }

@@ -38,24 +38,6 @@ class _HomePageState extends State<HomePage> {
           ProfileScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[200],
-        currentIndex: paginaAtual,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), label: 'Página Inicial'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
-        onTap: (pagina) {
-          pc.animateToPage(
-            pagina,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.ease,
-          );
-        },
-        // backgroundColor: Colors.grey[100],
-      ),
     );
   }
 }

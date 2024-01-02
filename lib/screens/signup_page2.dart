@@ -1,4 +1,6 @@
 import 'package:Carrrabicho/models/result_pessoa.dart';
+import 'package:Carrrabicho/screens/signup_page3.dart';
+import 'package:Carrrabicho/widgets/block_button.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +8,23 @@ import 'package:http/http.dart' as http;
 import '../data/via_cep_service.dart';
 
 class SignUpPage2 extends StatefulWidget {
-  SignUpPage2({super.key});
+  final String nome;
+  final String sobrenome;
+  final String cpf;
+  final String telefone;
+  final String nasc;
+  final String sexo;
+  ResultPessoa? usuario = ResultPessoa();
+
+  SignUpPage2({
+    super.key,
+    required this.nome,
+    required this.sobrenome,
+    required this.cpf,
+    required this.telefone,
+    required this.nasc,
+    required this.sexo,
+  });
 
   bool _loading = false;
   String? resultado;
@@ -24,7 +42,20 @@ class _SignUpPage2State extends State<SignUpPage2> {
   final _formKey = GlobalKey<FormState>();
   var cep = '';
   var ende = '';
-  bool loading = false;
+  bool? _loading = false;
+  bool _loadingCep = false;
+  final FocusNode _fcep = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.usuario!.nome = widget.nome;
+    widget.usuario!.sobrenome = widget.sobrenome;
+    widget.usuario!.cpf = widget.cpf;
+    widget.usuario!.celular = widget.telefone;
+    widget.usuario!.sexo = widget.sexo;
+    widget.usuario!.nasc = widget.nasc;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +110,14 @@ class _SignUpPage2State extends State<SignUpPage2> {
                           height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 24.0, left: 24),
+                          padding: const EdgeInsets.only(),
                           child: TextFormField(
                             inputFormatters: [
                               // obrigatório
                               FilteringTextInputFormatter.digitsOnly,
                               CepInputFormatter()
                             ],
+                            focusNode: _fcep,
                             textInputAction: TextInputAction.next,
                             // autofocus: true,
                             controller: widget._searchCepController,
@@ -93,7 +125,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             decoration: InputDecoration(
                               labelText: "Digite o CEP",
                               border: OutlineInputBorder(),
-                              suffixIcon: widget._loading
+                              suffixIcon: _loadingCep
                                   ? CircularProgressIndicator()
                                   : IconButton(
                                       icon: Icon(
@@ -104,17 +136,20 @@ class _SignUpPage2State extends State<SignUpPage2> {
                                         _searchCep();
                                       },
                                     ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
+                             
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                user.cep = value;
-                              });
+
+                            onSaved: (val) {
+                              cep = val!;
+                            },
+                            onFieldSubmitted: (value) => _fcep.nextFocus(),
+                            onEditingComplete: () {
+                              _fcep.nextFocus();
+                              _searchCep();
                             },
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Informa o CEP!';
+                                return 'Informe o CEP!';
                               }
                               return null;
                             },
@@ -123,207 +158,171 @@ class _SignUpPage2State extends State<SignUpPage2> {
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            enabled: false,
-                            keyboardType: TextInputType.text,
-                            controller: widget._endeController,
-                            decoration: InputDecoration(
-                              labelText: "Endereço",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
+                        TextFormField(
+                          // autofocus: true,
+                          enabled: false,
+                          keyboardType: TextInputType.text,
+                          controller: widget._endeController,
+                          decoration: InputDecoration(
+                            labelText: "Endereço",
+                            border: OutlineInputBorder(),
+                            
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            keyboardType: TextInputType.text,
-                            enabled: false,
-                            controller: widget._bairroController,
-                            decoration: InputDecoration(
-                              labelText: "Bairro",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                user.endereco = value;
-                              });
-                            },
+                        TextFormField(
+                          // autofocus: true,
+                          keyboardType: TextInputType.text,
+                          enabled: false,
+                          controller: widget._bairroController,
+                          decoration: InputDecoration(
+                            labelText: "Bairro",
+                            border: OutlineInputBorder(),
+                            
                           ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              user.endereco = value;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            keyboardType: TextInputType.text,
-                            enabled: false,
-                            controller: widget._cidadeController,
-                            decoration: InputDecoration(
-                              labelText: "Cidade",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                user.cidade = value;
-                              });
-                            },
+                        TextFormField(
+                          // autofocus: true,
+                          keyboardType: TextInputType.text,
+                          enabled: false,
+                          controller: widget._cidadeController,
+                          decoration: InputDecoration(
+                            labelText: "Cidade",
+                            border: OutlineInputBorder(),
+                            
                           ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              user.cidade = value;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            keyboardType: TextInputType.text,
-                            enabled: false,
-                            controller: widget._ufController,
-                            decoration: InputDecoration(
-                              labelText: "Estado",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                user.uf = value;
-                              });
-                            },
+                        TextFormField(
+                          // autofocus: true,
+                          keyboardType: TextInputType.text,
+                          enabled: false,
+                          controller: widget._ufController,
+                          decoration: InputDecoration(
+                            labelText: "Estado",
+                            border: OutlineInputBorder(),
+                            
                           ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              user.uf = value;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Complemento (Apto / Bloco / Casa)",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                user.complemento = value;
-                              });
-                            },
+                        TextFormField(
+                          onSaved: (val) {
+                            widget.usuario!.complemento = val!;
+                          },
+                          // autofocus: true,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: "Complemento (Apto / Bloco / Casa)",
+                            border: OutlineInputBorder(),
+                         
                           ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              user.complemento = value;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0, right: 24),
-                          child: TextFormField(
-                            // autofocus: true,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: "Número",
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 5),
-                            ),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Informa o Número!';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                user.numero = value;
-                              });
-                            },
+                        TextFormField(
+                          onSaved: (val) {
+                            widget.usuario!.numero = val!;
+                          },
+                          // autofocus: true,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: "Número",
+                            border: OutlineInputBorder(),
+                           
                           ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Informe o Número!';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              user.numero = value;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 5, left: 24, right: 24),
-                          child: ElevatedButton(
+                              top: 10.0, bottom: 5),
+                          child: BlockButton(
                             onPressed: () {
+                              
                               if (_formKey.currentState!.validate()) {
-                                Navigator.pushNamed(context, '/signup3');
+                                _formKey.currentState!.save();
+                                setState(() {
+                                _loading = true;
+                              });
+                                create1(context);
                               }
                             },
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: (loading)
-                                  ? [
-                                      const Padding(
-                                        padding: EdgeInsets.all(16),
-                                        child: SizedBox(
-                                          width: 24,
-                                          height: 24,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      )
-                                    ]
-                                  : [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Prosseguir',
-                                          style: const TextStyle(fontSize: 20),
-                                        ),
-                                      ),
-                                    ],
-                            ),
+                            child: _loading!
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    'Prosseguir',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                           ),
                         ),
-                        ElevatedButton(
+                        TextButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                          ),
                           child: Text('Voltar'),
                         )
                       ]),
@@ -341,8 +340,22 @@ class _SignUpPage2State extends State<SignUpPage2> {
     );
   }
 
+  create1(BuildContext context) {
+    setState(() {
+      _loading = true;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SignUpPage3(usuario: widget.usuario!)),
+    );
+    setState(() {
+      _loading = false;
+    });
+  }
+
   Future _searchCep() async {
-    widget._loading = true;
+    _loadingCep = true;
 
     final cep = widget._searchCepController.text;
 
@@ -352,17 +365,20 @@ class _SignUpPage2State extends State<SignUpPage2> {
       print('CEP não encontrado. Verifique e tente novamente!');
     } else {
       setState(() {
-        widget._endeController.text = resultCep.logradouro ?? '';
-        user.endereco = resultCep.logradouro ?? '';
-        widget._bairroController.text = resultCep.bairro ?? '';
-        user.bairro = resultCep.bairro ?? '';
-        widget._cidadeController.text = resultCep.localidade ?? '';
-        user.cidade = resultCep.localidade ?? '';
-        widget._ufController.text = resultCep.uf ?? '';
-        user.uf = resultCep.uf ?? '';
+        widget._endeController.text = resultCep.logradouro!;
+        widget._bairroController.text = resultCep.bairro!;
+        widget._cidadeController.text = resultCep.localidade!;
+        widget._ufController.text = resultCep.uf!;
+
+        widget.usuario!.cep = cep;
+        widget.usuario!.endereco = resultCep.logradouro;
+
+        widget.usuario!.bairro = resultCep.bairro;
+        widget.usuario!.cidade = resultCep.localidade;
+        widget.usuario!.uf = resultCep.uf;
       });
     }
 
-    widget._loading = false;
+    _loadingCep = false;
   }
 }

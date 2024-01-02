@@ -11,9 +11,10 @@ class _ChatScreenState extends State<ChatScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         centerTitle: true,
         title: Text("Fale conosco"),
-        backgroundColor: Colors.indigo,
+     
       ),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),

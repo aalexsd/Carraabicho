@@ -1,15 +1,25 @@
+import 'dart:convert';
+
 import 'package:Carrrabicho/repository/profissoes.dart';
+import 'package:Carrrabicho/screens/login_page.dart';
+import 'package:Carrrabicho/widgets/block_button.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../Services/auth_services.dart';
+import '../bloc/ws_cadpessoa.dart';
+import '../bloc/wsf_param.dart';
 import '../data/via_cep_service.dart';
 import '../models/result_pessoa.dart';
+import '../widgets/alert.dart';
 
 class SignUpPage3 extends StatefulWidget {
-  SignUpPage3({super.key});
+  var usuario = ResultPessoa();
+  SignUpPage3({super.key, required this.usuario});
 
   @override
   State<SignUpPage3> createState() => _SignUpPage3State();
@@ -41,7 +51,9 @@ class _SignUpPage3State extends State<SignUpPage3> {
   registrar() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().registrar(email.text, senha.text, context);
+      await context
+          .read<AuthService>()
+          .registrar(email.text, senha.text, context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
@@ -49,13 +61,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
     }
   }
 
-    saveAll() async {
+  saveAll() async {
     // Criar uma instância do Firestore
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     // Criar um documento no Firestore
     DocumentReference docRef = firestore.collection('usuarios').doc();
-
 
     // Definir os dados a serem salvos
     Map<String, dynamic> data = {
@@ -70,7 +81,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
       'estado': user.uf,
       'complemento': user.complemento,
       'numero': user.numero,
-      'profissao': user.tipoServico,
 
       // Adicione outros campos aqui com os respectivos valores
     };
@@ -83,9 +93,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
       //print('Erro ao salvar os dados: $e');
     }
   }
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -138,62 +145,91 @@ class _SignUpPage3State extends State<SignUpPage3> {
                         SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          children: [
-                            Radio<bool>(
-                              autofocus: true,
-                              value: true,
-                              groupValue: tipoUsuario,
-                              onChanged: (value) {
+                        CustomRadioButton(
+                            defaultSelected: "USUARIO",
+                            enableShape: true,
+                            autoWidth: true,
+                            elevation: 0,
+                            absoluteZeroSpacing: false,
+                            unSelectedColor: Theme.of(context).canvasColor,
+                            buttonLables: [
+                              'Sou usuário',
+                              'Sou prestador',
+                            ],
+                            buttonValues: [
+                              "USUARIO",
+                              "PRESTADOR",
+                            ],
+                            buttonTextStyle: ButtonTextStyle(
+                                selectedColor: Colors.white,
+                                unSelectedColor: Colors.black,
+                                textStyle: TextStyle(fontSize: 16)),
+                            radioButtonValue: (value) {
+                              if (value == "USUARIO") {
                                 setState(() {
-                                  tipoUsuario = value!;
+                                  tipoUsuario = true;
                                 });
-                              },
-                            ),
-                            const Text('Sou usuário'),
-                            Radio<bool>(
-                              value: false,
-                              groupValue: tipoUsuario,
-                              onChanged: (value) {
+                              } else {
                                 setState(() {
-                                  tipoUsuario = value!;
+                                  tipoUsuario = false;
                                 });
-                              },
-                            ),
-                            const Text('Sou prestador de serviço'),
-                          ],
-                        ),
+                              }
+                            },
+                            selectedColor: Colors.indigo),
+                        // Row(
+                        //   children: [
+                        //     Radio<bool>(
+                        //       autofocus: true,
+                        //       value: true,
+                        //       groupValue: tipoUsuario,
+                        //       onChanged: (value) {
+                        //         setState(() {
+                        //           tipoUsuario = value!;
+                        //         });
+                        //       },
+                        //     ),
+                        //     const Text('Sou usuário'),
+                        //     Radio<bool>(
+                        //       value: false,
+                        //       groupValue: tipoUsuario,
+                        //       onChanged: (value) {
+                        //         setState(() {
+                        //           tipoUsuario = value!;
+                        //         });
+                        //       },
+                        //     ),
+                        //     const Text('Sou prestador de serviço'),
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
                         (tipoUsuario)
                             ? Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
-                                    child: TextFormField(
-                                      controller: email,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.email),
-                                        hintText: 'Digite seu E-mail',
-                                        labelText: 'Email',
-                                        contentPadding:
-                                        EdgeInsets.symmetric(vertical: 8),
-                                      ),
-                                      keyboardType: TextInputType.emailAddress,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Informe o email corretamente!';
-                                        }
-                                        return null;
-                                      },
+                                  TextFormField(
+                                    controller: email,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      prefixIcon: Icon(Icons.email),
+                                      hintText: 'Digite seu E-mail',
+                                      labelText: 'Email',
                                     ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Informe o email corretamente!';
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (value) {
+                                      setState(() {
+                                        widget.usuario.email = value!;
+                                      });
+                                    },
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: senha,
@@ -202,8 +238,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.lock),
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Senha',
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 10),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
@@ -231,11 +265,15 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         }
                                         return null;
                                       },
+                                      onSaved: (value) {
+                                        setState(() {
+                                          widget.usuario.senha = value!;
+                                        });
+                                      },
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: confirmasenha,
@@ -244,8 +282,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.lock),
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Confirme sua senha',
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
@@ -265,12 +301,18 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                           ),
                                         ),
                                       ),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Informa sua senha!';
-                                        } else if (value.length < 6) {
-                                          return 'Sua senha deve ter no mínimo 6 caracteres';
+                                      validator: (String? value) {
+                                        if (valueValidator(value)) {
+                                          return 'Confirme sua Senha';
                                         }
+                                        if (value!.length < 6) {
+                                          return 'Senha deve ter no mínimo 6 dígitos!';
+                                        }
+
+                                        if (value != senha.text) {
+                                          return 'Senhas não são iguais';
+                                        }
+
                                         return null;
                                       },
                                     ),
@@ -280,8 +322,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                             : Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24),
+                                    padding: const EdgeInsets.only(),
                                     child: DropdownSearch<String>(
                                       popupProps: PopupProps.menu(
                                         fit: FlexFit.tight,
@@ -297,8 +338,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                           prefixIcon: Icon(Icons.shopping_bag),
                                           hintText: 'Tipo de Prestador',
                                           labelText: 'Tipo de Prestador',
-                                          contentPadding:
-                                              EdgeInsets.symmetric(vertical: 8),
                                         ),
                                       ),
                                       validator: (value) {
@@ -310,14 +349,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                       onChanged: (value) {
                                         setState(() {
                                           selectedProfissao = value;
-                                          user.tipoServico = value;
                                         });
                                       },
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: TextFormField(
                                       controller: email,
                                       decoration: const InputDecoration(
@@ -325,8 +362,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.email),
                                         hintText: 'Digite seu E-mail',
                                         labelText: 'Email',
-                                        contentPadding:
-                                        EdgeInsets.symmetric(vertical: 8),
                                       ),
                                       keyboardType: TextInputType.emailAddress,
                                       validator: (value) {
@@ -338,8 +373,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: senha,
@@ -348,8 +382,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.lock),
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Senha',
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
@@ -380,8 +412,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 24, right: 24, top: 12),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: confirmasenha,
@@ -390,8 +421,6 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         prefixIcon: Icon(Icons.lock),
                                         hintText: 'Digite sua Senha',
                                         labelText: 'Confirme sua senha',
-                                        contentPadding:
-                                            EdgeInsets.symmetric(vertical: 8),
                                         suffixIcon: InkWell(
                                           onTap: _togglePasswordVisibility,
                                           child: Padding(
@@ -424,61 +453,49 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                 ],
                               ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 5, left: 24, right: 24),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              print(user.cep);
-                              if (_formKey.currentState!.validate()) {
-                                if (senha.text != confirmasenha.text) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('As senhas não coincidem!'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 5),
+                          child: SizedBox(
+                            height: 85,
+                            child: BlockButton(
+                              onPressed: () {
+                                print(user.cep);
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  _verifyUser();
                                 }
-                                saveAll();
-                                registrar();
-                              }
-                            },
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: (loading)
-                                  ? [
-                                      const Padding(
-                                        padding: EdgeInsets.all(16),
-                                        child: SizedBox(
-                                          width: 24,
-                                          height: 24,
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: (loading)
+                                    ? [
+                                        const Padding(
+                                          padding: EdgeInsets.all(16),
                                           child: CircularProgressIndicator(
                                             color: Colors.white,
                                           ),
+                                        )
+                                      ]
+                                    : [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Criar Conta',
+                                            style:
+                                                const TextStyle(fontSize: 20),
+                                          ),
                                         ),
-                                      )
-                                    ]
-                                  : [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Criar Conta',
-                                          style: const TextStyle(fontSize: 20),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                              ),
                             ),
                           ),
                         ),
-                        ElevatedButton(
+                        TextButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                          ),
                           child: Text('Voltar'),
                         )
                       ]),
@@ -494,5 +511,82 @@ class _SignUpPage3State extends State<SignUpPage3> {
         ),
       ),
     );
+  }
+
+  create1(BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
+
+    var res = await API.cadUsuario(widget.usuario);
+
+    setState(() {
+      loading = false;
+    });
+
+    if (res) {
+      // Usuário criado com sucesso
+
+      // Agora, você pode navegar para a tela de login
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+      BotToast.showText(
+        text: "Usuário criado com sucesso!",
+        textStyle: TextStyle(
+            fontSize: 26, fontWeight: FontWeight.w500, color: Colors.white),
+        contentColor: Colors.green,
+        // align: Alignment(0.7, -0.75),
+        duration: Duration(seconds: 3),
+      );
+    } else {
+      // Erro ao cadastrar usuário
+      showAlertDialog1ok(
+          context, 'Erro ao cadastrar usuário, tente novamente!');
+    }
+  }
+
+  Future<void> _verifyUser() async {
+    try {
+      final response = await http.post(
+        Uri.parse(Wsf().baseurl() +
+            'verificar-usuario'), // Substitua pelo endereço correto da sua API
+        body: jsonEncode({
+          'email': email.text,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data['exists']) {
+          // Usuário já cadastrado, exibir mensagem
+          showAlertDialog1ok(context, data['message']);
+        } else {
+          await create1(context);
+        }
+      } else {
+        // Se houver algum problema na requisição, exibir mensagem de erro
+        showAlertDialog1ok(context, 'Erro ao verificar usuário.');
+      }
+    } catch (error) {
+      print(error);
+      showAlertDialog1ok(context, 'Erro interno.');
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  bool valueValidator(String? value) {
+    if (value != null && value.isEmpty) {
+      return true;
+    }
+    return false;
   }
 }

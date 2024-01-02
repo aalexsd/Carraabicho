@@ -85,7 +85,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 24, right: 24, top: 24, bottom: 5),
+                          left: 12, right: 12, top: 24, bottom: 5),
                       child: TextFormField(
                         controller: email,
                         decoration: const InputDecoration(
@@ -104,7 +104,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                     BlockButton(
-                        label: 'Redefinir Senha',
+                        child: Text('Redefinir Senha'),
                         onPressed: isLoading ? null : resetPassword),
                   ],
                 ),

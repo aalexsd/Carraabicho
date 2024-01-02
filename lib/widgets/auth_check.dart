@@ -1,3 +1,4 @@
+import 'package:Carrrabicho/screens/bottom_nav_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,7 @@ class _AuthCheckState extends State<AuthCheck> {
     } else if (auth.usuario == null) {
       return const LoginPage();
     } else {
-      return HomePage();
+      return BottomNavScreen();
     }
   }
 

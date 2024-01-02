@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../Services/auth_services.dart';
+import '../models/result_pessoa.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -28,24 +29,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaquery = MediaQuery.of(context);
-    final user = FirebaseAuth.instance.currentUser!;
-    displayName = user.displayName ?? '';
+
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        automaticallyImplyLeading: false,
       ),
+      backgroundColor: Colors.white,
+
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 20),
+              padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                'Olá, $displayName',
+                'Olá, ${user.nome}',
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -65,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ListTile(
                     title: const Text('Nome completo:',
                         style: TextStyle(fontSize: 15)),
-                    trailing: Text(user.displayName ?? ''),
+                    trailing: Text("${user.nome} ${user.sobrenome}" ?? ''),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EditProfileScreen(
@@ -90,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: BlockButton(
-                  label: 'Edital Perfil',
+                  child: Text("Editar Perfil"),
                   onPressed: () {
                     Navigator.pushNamed(context, '/bluetooth');
                   },
@@ -98,17 +97,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
+              padding: const EdgeInsets.only(right: 12, left: 12),
               child: OutlinedButton(
                 onPressed: () {
-                  context.read<AuthService>().logout();
-                  signOutGoogle();
+                  // context.read<AuthService>().logout();
+                  // signOutGoogle();
                   sair(context);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(15),
                   backgroundColor: Colors.red,
                 ),
                 child: const Row(
@@ -129,18 +128,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   sair(BuildContext context) {
-  // var bloc = Provider.of<UserBloc>(context);
-  //var res = await bloc.create(user);
+    // var bloc = Provider.of<UserBloc>(context);
+    //var res = await bloc.create(user);
 
-  if (true) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
+    if (true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+    }
   }
-}
 
   Future<void> signOutGoogle() async {
     await GoogleSignIn().signOut();
@@ -151,4 +150,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  
 }

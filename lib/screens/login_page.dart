@@ -1,6 +1,9 @@
 import 'package:Carrrabicho/repository/profissoes.dart';
+import 'package:Carrrabicho/screens/bottom_nav_screen.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/signup.dart';
+import 'package:Carrrabicho/widgets/block_button.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import '../Services/auth_services.dart';
+import '../bloc/ws_login.dart';
+import '../widgets/alert.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -28,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   late String toggleButton;
   bool loading = false;
   bool showPassword = false;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -66,7 +72,9 @@ class _LoginPageState extends State<LoginPage> {
   registrar() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().registrar(email.text, senha.text, context);
+      await context
+          .read<AuthService>()
+          .registrar(email.text, senha.text, context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
@@ -136,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           Text(
-                            titulo,
+                            "Bem-vindo",
                             style: const TextStyle(
                               color: Colors.indigo,
                               fontSize: 40,
@@ -145,149 +153,97 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Text(
-                            subtitulo,
+                            "Entre na sua conta",
                             style: const TextStyle(
                                 color: Colors.indigo,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: -1),
                           ),
-                          if (!isLogin)
-                            GeneralSignUp(),
-                          if (isLogin)
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, top: 12),
-                                  child: TextFormField(
-                                    controller: email,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.email),
-                                      hintText: 'Digite seu E-mail',
-                                      labelText: 'Email',
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8),
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Informe o email corretamente!';
-                                      }
-                                      return null;
-                                    },
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 12),
+                                child: TextFormField(
+                                  controller: email,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    prefixIcon: Icon(Icons.email),
+                                    hintText: 'Digite seu E-mail',
+                                    labelText: 'Email',
+                                    
                                   ),
+                                  keyboardType: TextInputType.emailAddress,
+                                  
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 24, right: 24, top: 12),
-                                  child: TextFormField(
-                                    obscureText: !showPassword,
-                                    controller: senha,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.lock),
-                                      hintText: 'Digite sua Senha',
-                                      labelText: 'Senha',
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8),
-                                      suffixIcon: InkWell(
-                                        onTap: _togglePasswordVisibility,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 12.0, right: 12, bottom: 12),
-                                          child: Text(
-                                            showPassword ? 'Ocultar' : 'Exibir',
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 12),
+                                child: TextFormField(
+                                  obscureText: !showPassword,
+                                  controller: senha,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    prefixIcon: Icon(Icons.lock),
+                                    hintText: 'Digite sua Senha',
+                                    labelText: 'Senha',
+                                
+                                    suffixIcon: InkWell(
+                                      onTap: _togglePasswordVisibility,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 12.0, right: 12, bottom: 12),
+                                        child: Text(
+                                          showPassword ? 'Ocultar' : 'Exibir',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
                                     ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Informa sua senha!';
-                                      } else if (value.length < 6) {
-                                        return 'Sua senha deve ter no mínimo 6 caracteres';
-                                      }
-                                      return null;
-                                    },
                                   ),
+                                  
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 24.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        child: const Text(
-                                          'Esqueceu sua senha?',
-                                          style:
-                                              TextStyle(color: Colors.indigo),
-                                        ),
-                                        onPressed: () {
-                                          onForgotPasswordClicked(context);
-                                        },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      child: const Text(
+                                        'Esqueceu sua senha?',
+                                        style: TextStyle(color: Colors.indigo),
                                       ),
-                                    ],
-                                  ),
+                                      onPressed: () {
+                                        onForgotPasswordClicked(context);
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10.0, left: 24, right: 24),
-                            child: ElevatedButton(
+                              ),
+                            ],
+                          ),
+                          BlockButton(
                               onPressed: () {
+                                setState(() {
+                                  _loading = true;
+                                });
                                 if (formKey.currentState!.validate()) {
-                                  if (isLogin) {
-                                    login();
-                                  } else {
-                                    // registrar();
-                                    Navigator.pushNamed(context, '/signup2');
-                                  }
+                                  formKey.currentState!.save();
+
+                                  _clicklogin(
+                                      context, email.text, senha.text);
                                 }
                               },
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.all(5),
-                                backgroundColor: Colors.black,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: (loading)
-                                    ? [
-                                        const Padding(
-                                          padding: EdgeInsets.all(16),
-                                          child: SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                      ]
-                                    : [
-                                        Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: (isLogin)
-                                                ? Text(
-                                                    actionButton,
-                                                    style: const TextStyle(
-                                                        fontSize: 20),
-                                                  )
-                                                : Text(
-                                                    'Prosseguir',
-                                                    style: const TextStyle(
-                                                        fontSize: 20),
-                                                  )),
-                                      ],
-                              ),
-                            ),
-                          ),
+                              child: _loading
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : Text("Entrar")),
                           if (isLogin)
                             const Padding(
                               padding: EdgeInsets.only(top: 10.0),
@@ -328,7 +284,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           TextButton(
-                            onPressed: () => setFormAction(!isLogin),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/signup');
+                            },
                             child: Text(
                               toggleButton,
                               style: const TextStyle(color: Colors.indigo),
@@ -345,6 +303,30 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _clicklogin(BuildContext context, String login, String senha) async {
+    var ret = false;
+    if (login.isEmpty || senha.isEmpty) {
+      showAlertDialog1ok(context, "Login e/ou Senha em branco")
+          .then((value) => setState(() => _loading = false));
+    } else {
+      setState(() => _loading = true);
+
+      ret = await myLogin(login, senha);
+      setState(() => _loading = false);
+
+      if (ret) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavScreen(),
+          ),
+        );
+      } else {
+        showAlertDialog1ok(context, "Login e/ou Senha inválido(s)");
+      }
+    }
   }
 
   Future<void> signInWithGoogle() async {
@@ -364,7 +346,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (userCredential.user != null) {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => BottomNavScreen()),
         );
       }
     } catch (e) {}
