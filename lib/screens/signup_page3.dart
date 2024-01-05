@@ -150,7 +150,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                           height: 10,
                         ),
                         CustomRadioButton(
-                            defaultSelected: "USUARIO",
+                        
                             enableShape: true,
                             autoWidth: true,
                             elevation: 0,
