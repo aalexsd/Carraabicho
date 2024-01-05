@@ -22,7 +22,7 @@ class _MenuState extends State<Menu> {
         padding: EdgeInsets.zero,
         children: [
           SizedBox(
-            height: 10,
+            height: 50,
           ),
           const Padding(
             padding: EdgeInsets.all(15.0),

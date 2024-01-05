@@ -1,20 +1,5 @@
 import 'dart:convert';
 
-class IDUser {
-  String id = '';
-  String nome = '';
-  String email = '';
-  String cpf = '';
-}
-
-class ParCompra {
-  String cupom = '';
-  String nome = '';
-  String email = '';
-  String cpf = '';
-}
-
-ParCompra parCompra = new ParCompra();
 
 class ResultPessoa {
   int? id;
@@ -35,6 +20,8 @@ class ResultPessoa {
   String? ibge;
   String? senha;
   String? sobrenome;
+  String? tipo;
+  String? valor;
 
 
   ResultPessoa({
@@ -56,6 +43,8 @@ class ResultPessoa {
     this.ibge,
     this.senha,
     this.sobrenome,
+        this.tipo,
+            this.valor,
   });
   factory ResultPessoa.fromJson(Map<String, dynamic> json) => ResultPessoa(
         id: json["id"],
@@ -76,6 +65,8 @@ class ResultPessoa {
         ibge: json["ibge"],
         senha: json["senha"],
         sobrenome: json["sobrenome"],
+                tipo: json["tipo"],
+        valor: json["valor"],
       );
 
 //factory ResultPessoa.fromJson(String str) =>
@@ -105,6 +96,8 @@ class ResultPessoa {
         ibge: json["ibge"],
         senha: json["senha"],
         sobrenome: json["sobrenome"],
+        tipo: json["tipo"],
+        valor: json["valor"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -126,6 +119,8 @@ class ResultPessoa {
         "ibge": ibge,
         "senha": senha,
          "sobrenome": sobrenome,
+         "tipo": tipo,
+         "valor": valor,
       };
 }
 

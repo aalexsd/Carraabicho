@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Carrrabicho/models/profissional.dart';
+import 'package:Carrrabicho/models/result_profissional.dart';
 import 'package:faker/faker.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +22,6 @@ class VeterinarioRepository {
     final preco = faker.randomGenerator.integer(min(50, 500));
 
     return Profissional(
-      foto: 'assets/images/veterinario1.jpeg',
       nome: nome,
       localizacao: localizacao,
       preco: double.parse(preco.toString()),
@@ -31,49 +31,47 @@ class VeterinarioRepository {
 
 
 class CuidadorRepository {
-  static List<Profissional> tabela = List.generate(20, (index) {
+  static List<ResultProfissional> tabela = List.generate(20, (index) {
     final faker = Faker();
     final nome = faker.person.firstName();
     final localizacao = faker.address.city();
-    final preco = faker.randomGenerator.integer(min(50, 500));
+    final preco = faker.randomGenerator.string(min(50, 500));
 
-    return Profissional(
-      foto: 'assets/images/cuidadorbonito.avif',
+    return ResultProfissional(
+    
       nome: nome,
-      localizacao: localizacao,
-      preco: double.parse(preco.toString()),
+      cidade: localizacao,
+      valor: preco
     );
   });
 }
 
 class AdestradorRepository {
-  static List<Profissional> tabela = List.generate(20, (index) {
+  static List<ResultProfissional> tabela = List.generate(20, (index) {
     final faker = Faker();
     final nome = faker.person.firstName();
     final localizacao = faker.address.city();
-    final preco = faker.randomGenerator.integer(min(50, 500));
+    final preco = faker.randomGenerator.string(min(50, 500));
 
-    return Profissional(
-      foto: 'assets/images/adestrador1.jpeg',
+    return ResultProfissional(
       nome: nome,
-      localizacao: localizacao,
-      preco: double.parse(preco.toString()),
+      cidade: localizacao,
+      valor: preco
     );
   });
 }
 
 class HotelRepository {
-  static List<Profissional> tabela = List.generate(20, (index) {
+  static List<ResultProfissional> tabela = List.generate(20, (index) {
     final faker = Faker();
     final nome = faker.person.firstName();
     final localizacao = faker.address.city();
-    final preco = faker.randomGenerator.integer(min(50, 500));
+    final preco = faker.randomGenerator.string(min(50, 500));
 
-    return Profissional(
-      foto: 'assets/images/hotel4.jpg',
+    return ResultProfissional(
       nome: nome,
-      localizacao: localizacao,
-      preco: double.parse(preco.toString()),
+      cidade: localizacao,
+      valor: preco
     );
   });
 }

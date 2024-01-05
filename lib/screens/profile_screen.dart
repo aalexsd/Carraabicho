@@ -33,6 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        elevation: 1,
+        title: const Text('Perfil'),
       ),
       backgroundColor: Colors.white,
 
@@ -42,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(left: 20.0, top: 10),
               child: Text(
                 'Olá, ${user.nome}',
                 style:

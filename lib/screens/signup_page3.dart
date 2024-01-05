@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Carrrabicho/repository/profissoes.dart';
 import 'package:Carrrabicho/screens/login_page.dart';
@@ -9,6 +10,7 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../Services/auth_services.dart';
 import '../bloc/ws_cadpessoa.dart';
@@ -29,13 +31,15 @@ class _SignUpPage3State extends State<SignUpPage3> {
   final _formKey = GlobalKey<FormState>();
   final senha = TextEditingController();
   final email = TextEditingController();
+   final valor = TextEditingController();
   final confirmasenha = TextEditingController();
 
   bool loading = false;
-  bool tipoUsuario = true;
+  bool isUsuario = true;
   var usuarioSelecionado;
   bool showPassword = false;
   String? selectedProfissao;
+  late File? _pickedImage; 
 
   @override
   void initState() {
@@ -165,13 +169,13 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                 unSelectedColor: Colors.black,
                                 textStyle: TextStyle(fontSize: 16)),
                             radioButtonValue: (value) {
-                              if (value == "USUARIO") {
+                              if (value == "PRESTADOR") {
                                 setState(() {
-                                  tipoUsuario = true;
+                                  isUsuario = false;
                                 });
                               } else {
                                 setState(() {
-                                  tipoUsuario = false;
+                                  isUsuario = true;
                                 });
                               }
                             },
@@ -204,7 +208,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                         SizedBox(
                           height: 10,
                         ),
-                        (tipoUsuario)
+                        (isUsuario)
                             ? Column(
                                 children: [
                                   TextFormField(
@@ -349,7 +353,34 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                       onChanged: (value) {
                                         setState(() {
                                           selectedProfissao = value;
+                                          widget.usuario.tipo = selectedProfissao;
+                                        
                                         });
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 12),
+                                    child: TextFormField(
+                                      controller: valor,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.monetization_on),
+                                        hintText: 'Digite o valor',
+                                        labelText: 'Valor',
+                                      ),
+                                      onSaved: (value){
+                                        setState(() {
+                                          widget.usuario.valor = value!;
+                                        });
+                                      },
+                                      
+                                      keyboardType: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Informe o valor corretamente!';
+                                        }
+                                        return null;
                                       },
                                     ),
                                   ),
@@ -363,6 +394,11 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                         hintText: 'Digite seu E-mail',
                                         labelText: 'Email',
                                       ),
+                                      onSaved: (value) {
+                                      setState(() {
+                                        widget.usuario.email = value!;
+                                      });
+                                      },
                                       keyboardType: TextInputType.emailAddress,
                                       validator: (value) {
                                         if (value!.isEmpty) {
@@ -377,6 +413,11 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     child: TextFormField(
                                       obscureText: !showPassword,
                                       controller: senha,
+                                      onSaved: (value) {
+                                      setState(() {
+                                        widget.usuario.senha = value!;
+                                      });
+                                      },
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         prefixIcon: Icon(Icons.lock),
@@ -539,7 +580,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
         textStyle: TextStyle(
             fontSize: 26, fontWeight: FontWeight.w500, color: Colors.white),
         contentColor: Colors.green,
-        // align: Alignment(0.7, -0.75),
+        align: Alignment(0.7, 0.9),
         duration: Duration(seconds: 3),
       );
     } else {
@@ -547,6 +588,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
       showAlertDialog1ok(
           context, 'Erro ao cadastrar usuário, tente novamente!');
     }
+  }
+
+  createProfissional(BuildContext context) async {
+
+    var res = await API.cadProfissional(widget.usuario);
+
   }
 
   Future<void> _verifyUser() async {
@@ -566,6 +613,9 @@ class _SignUpPage3State extends State<SignUpPage3> {
         if (data['exists']) {
           // Usuário já cadastrado, exibir mensagem
           showAlertDialog1ok(context, data['message']);
+        } else if (!isUsuario){
+          await createProfissional(context);
+           await create1(context);
         } else {
           await create1(context);
         }

@@ -1,11 +1,13 @@
 import 'package:Carrrabicho/screens/home_display_screen.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/pets_screen.dart';
-import 'package:Carrrabicho/screens/pets_screen.dart';
 import 'package:Carrrabicho/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../models/result_pessoa.dart';
+import 'agendamentos.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -18,6 +20,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   final List<Widget> _screens = [
     HomeDisplayScreen(),
     PetsScreen(),
+    AgendamentosScreen(
+      idUsuario: user.id!,
+    ),
+
     ProfileScreen(),
   ];
 
@@ -47,9 +53,15 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.pets_outlined),
-            title: const Text("Meus Pets"),
+            title: const Text("Pets"),
             selectedColor: Colors.white,
             activeIcon: Icon(Icons.pets, color: Colors.white),
+          ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.calendar_month_outlined),
+            title: const Text("Agendamentos"),
+            selectedColor: Colors.white,
+            activeIcon: Icon(Icons.calendar_month, color: Colors.white),
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.person_outline),

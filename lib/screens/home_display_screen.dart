@@ -58,7 +58,11 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          elevation: 0,
+          centerTitle: true,
+          title: Text("Bem-vindo, ${user.nome}", style: TextStyle(
+            fontSize: 18
+          ),),
+          elevation: 1,
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -87,7 +91,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                   child: Text(
-                    'O que você está procurando hoje, ${user.nome}?',
+                    'O que você está procurando hoje?',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                   ),
                 ),

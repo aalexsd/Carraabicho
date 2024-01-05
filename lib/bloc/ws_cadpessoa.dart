@@ -36,4 +36,41 @@ class API {
     } else
       return false;
   }
+
+
+  static Future<bool> cadProfissional(usuario) async {
+    var data = {
+      "nome": usuario.nome,
+      "sobrenome": usuario.sobrenome,
+      "cpf": usuario.cpf,
+      "email": usuario.email,
+      "cel": usuario.celular,
+      "nasc": usuario.nasc,
+      "sexo": usuario.sexo,
+      "senha": usuario.senha,
+      "cep": usuario.cep,
+      "endereco": usuario.endereco,
+      "nro": (usuario.numero == null) ? "N/A" : usuario.numero.toString(),
+      "complemento": (usuario.complemento == null)
+          ? "N/A"
+          : usuario.complemento.toString(),
+      "bairro": usuario.bairro,
+      "cidade": usuario.cidade,
+      "uf": usuario.uf,
+      "tipo": usuario.tipo,
+      "valor": usuario.valor
+    };
+    print(data);
+
+    var data2 = json.encode(data);
+
+    final response = await http.post(Uri.parse(Wsf().baseurl() + 'cadastro-profissional'),
+        body: data2, headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      return true;
+    } else
+      return false;
+  }
+
 }
