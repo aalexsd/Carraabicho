@@ -59,7 +59,7 @@ class _HomeDisplayScreenState extends State<HomeDisplayScreen>
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Bem-vindo, ${user.nome}", style: TextStyle(
+          title: Text("Bem-vindo(a), ${user.nome}", style: TextStyle(
             fontSize: 18
           ),),
           elevation: 1,

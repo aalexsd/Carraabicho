@@ -22,6 +22,7 @@ class ResultPessoa {
   String? sobrenome;
   String? tipo;
   String? valor;
+  String? isUsuario;
 
 
   ResultPessoa({
@@ -45,6 +46,7 @@ class ResultPessoa {
     this.sobrenome,
         this.tipo,
             this.valor,
+            this.isUsuario
   });
   factory ResultPessoa.fromJson(Map<String, dynamic> json) => ResultPessoa(
         id: json["id"],
@@ -65,8 +67,9 @@ class ResultPessoa {
         ibge: json["ibge"],
         senha: json["senha"],
         sobrenome: json["sobrenome"],
-                tipo: json["tipo"],
+        tipo: json["tipo"],
         valor: json["valor"],
+        isUsuario: json["isUsuario"],
       );
 
 //factory ResultPessoa.fromJson(String str) =>
@@ -98,6 +101,7 @@ class ResultPessoa {
         sobrenome: json["sobrenome"],
         tipo: json["tipo"],
         valor: json["valor"],
+        isUsuario: json["isUsuario"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -121,6 +125,7 @@ class ResultPessoa {
          "sobrenome": sobrenome,
          "tipo": tipo,
          "valor": valor,
+         "isUsuario": isUsuario,
       };
 }
 

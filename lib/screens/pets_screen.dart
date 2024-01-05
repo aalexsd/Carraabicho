@@ -51,7 +51,7 @@ class _PetsScreenState extends State<PetsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${pets[index]['nomePet']}',
+                        '${pets[index]['nomePet']}, ${pets[index]['tipoPet']}',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

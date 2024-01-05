@@ -23,6 +23,7 @@ class API {
       "bairro": usuario.bairro,
       "cidade": usuario.cidade,
       "uf": usuario.uf,
+      "isUsuario": usuario.isUsuario,
     };
     print(data);
 
@@ -58,7 +59,8 @@ class API {
       "cidade": usuario.cidade,
       "uf": usuario.uf,
       "tipo": usuario.tipo,
-      "valor": usuario.valor
+      "valor": usuario.valor,
+      "isUsuario": usuario.isUsuario
     };
     print(data);
 

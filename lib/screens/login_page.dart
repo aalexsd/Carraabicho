@@ -4,6 +4,7 @@ import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/signup.dart';
 import 'package:Carrrabicho/widgets/block_button.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   bool loading = false;
   bool showPassword = false;
   bool _loading = false;
+  bool isUsuario = true;
 
   @override
   void initState() {
@@ -162,6 +164,41 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Column(
                             children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              CustomRadioButton(
+                                  defaultSelected: "USUARIO",
+                                  enableShape: true,
+                                  autoWidth: true,
+                                  elevation: 0,
+                                  absoluteZeroSpacing: false,
+                                  unSelectedColor:
+                                      Theme.of(context).canvasColor,
+                                  buttonLables: [
+                                    'Sou usuário',
+                                    'Sou prestador',
+                                  ],
+                                  buttonValues: [
+                                    "USUARIO",
+                                    "PRESTADOR",
+                                  ],
+                                  buttonTextStyle: ButtonTextStyle(
+                                      selectedColor: Colors.white,
+                                      unSelectedColor: Colors.black,
+                                      textStyle: TextStyle(fontSize: 16)),
+                                  radioButtonValue: (value) {
+                                    if (value == "PRESTADOR") {
+                                      setState(() {
+                                        isUsuario = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        isUsuario = true;
+                                      });
+                                    }
+                                  },
+                                  selectedColor: Colors.indigo),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 10, right: 10, top: 12),
@@ -172,10 +209,8 @@ class _LoginPageState extends State<LoginPage> {
                                     prefixIcon: Icon(Icons.email),
                                     hintText: 'Digite seu E-mail',
                                     labelText: 'Email',
-                                    
                                   ),
                                   keyboardType: TextInputType.emailAddress,
-                                  
                                 ),
                               ),
                               Padding(
@@ -189,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
                                     prefixIcon: Icon(Icons.lock),
                                     hintText: 'Digite sua Senha',
                                     labelText: 'Senha',
-                                
                                     suffixIcon: InkWell(
                                       onTap: _togglePasswordVisibility,
                                       child: Padding(
@@ -205,7 +239,6 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                   ),
-                                  
                                 ),
                               ),
                               Padding(
@@ -234,9 +267,13 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState!.save();
-
-                                  _clicklogin(
-                                      context, email.text, senha.text);
+                                  if (isUsuario) {
+                                    _clickloginUsuario(
+                                        context, email.text, senha.text);
+                                  } else {
+                                    _clickloginProfi(
+                                        context, email.text, senha.text);
+                                  }
                                 }
                               },
                               child: _loading
@@ -305,7 +342,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _clicklogin(BuildContext context, String login, String senha) async {
+  _clickloginUsuario(BuildContext context, String login, String senha) async {
     var ret = false;
     if (login.isEmpty || senha.isEmpty) {
       showAlertDialog1ok(context, "Login e/ou Senha em branco")
@@ -314,6 +351,30 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _loading = true);
 
       ret = await myLogin(login, senha);
+      setState(() => _loading = false);
+
+      if (ret) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavScreen(),
+          ),
+        );
+      } else {
+        showAlertDialog1ok(context, "Login e/ou Senha inválido(s)");
+      }
+    }
+  }
+
+  _clickloginProfi(BuildContext context, String login, String senha) async {
+    var ret = false;
+    if (login.isEmpty || senha.isEmpty) {
+      showAlertDialog1ok(context, "Login e/ou Senha em branco")
+          .then((value) => setState(() => _loading = false));
+    } else {
+      setState(() => _loading = true);
+
+      ret = await myLoginProfissional(login, senha);
       setState(() => _loading = false);
 
       if (ret) {

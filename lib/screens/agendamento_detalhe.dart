@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:Carrrabicho/screens/bottom_nav_screen.dart';
 import 'package:Carrrabicho/widgets/block_button.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -24,17 +23,43 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   TextEditingController descricaoController = TextEditingController();
-    TextEditingController tituloController = TextEditingController();
+  TextEditingController tituloController = TextEditingController();
+    TextEditingController data = TextEditingController();
+      TextEditingController hora = TextEditingController();
   bool loading = false;
-  final data = TextEditingController();
-  final hora = TextEditingController();
   var horaformated;
+  List<Map<String, dynamic>> pets = [];
+  var pet;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(widget.profissional.id);
+    loadPets();
+  }
+
+  static Future<http.Response> getPets() async {
+    return await http.get(
+      Uri.parse(Wsf().baseurl() + 'pets/${user.id}'),
+    );
+  }
+
+  void loadPets() async {
+    try {
+      final response = await getPets();
+      if (response.statusCode == 200) {
+        final List<dynamic> petsData = json.decode(response.body);
+        List<Map<String, dynamic>> petsList =
+            List<Map<String, dynamic>>.from(petsData);
+
+        setState(() {
+          pets = petsList;
+        });
+      } else {
+        print('Erro ao carregar pets: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Erro ao carregar pets: $error');
+    }
   }
 
   @override
@@ -52,10 +77,39 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
             TextFormField(
               controller: tituloController,
               decoration: InputDecoration(
-                  labelText: ' Nome do agendamento',
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 5, horizontal: 5)),
+                labelText: 'Nome do agendamento',
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
+            ),
+            SizedBox(height: 15),
+            DropdownButtonFormField(
+              decoration: InputDecoration(
+                labelText: 'Pet',
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
+              items: pets.map((pet) {
+                return DropdownMenuItem(
+                  value: pet['nomePet'],
+                  child: Text(pet['nomePet']),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                 pet = value.toString();
+                });
+              },
+              
+              // value: _tipoPet,
+              validator: (value) {
+                if (value == null) {
+                  return 'Por favor, selecione o pet.';
+                }
+                return null;
+              },
             ),
             SizedBox(height: 15),
             TextFormField(
@@ -140,7 +194,6 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
   _agendar() async {
     try {
       if (selectedDate == null || selectedTime == null) {
-        // Exibir mensagem de erro se a data ou hora não forem selecionadas
         showAlertDialog1ok(
             context, 'Selecione a data e a hora antes de agendar.');
         return;
@@ -158,12 +211,11 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
         "idProfissional": widget.profissional.id,
         "nomeProfissional": widget.profissional.nome,
         "titulo": tituloController.text,
-        "data": formattedDate,
+        "data": selectedDate.toString(),
         "hora": formattedTime,
+        "pet": pet,
         "descricao": descricaoController.text,
       };
-
-      print(data);
 
       final response = await http.post(
         Uri.parse(Wsf().baseurl() + 'agendamento'),
@@ -173,8 +225,8 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => BottomNavScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => BottomNavScreen()));
         BotToast.showText(
           text: "Agendamento criado com sucesso!",
           textStyle: TextStyle(
@@ -182,10 +234,9 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
           contentColor: Colors.green,
           align: Alignment(0.7, -0.75),
           duration: Duration(seconds: 3),
-        ); // N
+        );
         print(data);
       } else {
-        // Se houver algum problema na requisição, exibir mensagem de erro
         showAlertDialog1ok(context, 'Erro ao verificar usuário.');
       }
     } catch (error) {

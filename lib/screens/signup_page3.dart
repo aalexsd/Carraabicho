@@ -172,10 +172,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
                               if (value == "PRESTADOR") {
                                 setState(() {
                                   isUsuario = false;
+                                  widget.usuario.isUsuario = "N";
                                 });
                               } else {
                                 setState(() {
                                   isUsuario = true;
+                                  widget.usuario.isUsuario = "S";
                                 });
                               }
                             },

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +50,11 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
 
   static Future<http.Response> getAgendamento() async {
     return await http.get(
-      Uri.parse(Wsf().baseurl() + 'agendamentos/${user.id}'),
+      user.isUsuario == 'S' ?
+      Uri.parse(
+        Wsf().baseurl() + 'agendamentos/usuario/${user.id}')
+        :      Uri.parse(
+        Wsf().baseurl() + 'agendamentos/profissional/${user.id}')
     );
   }
 
@@ -69,7 +72,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
           DateTime dataAgendamento =
               DateTime.parse(agendamentos[index]['data']);
           String dataFormatada =
-              DateFormat('MM/dd/yyyy').format(dataAgendamento);
+              DateFormat('dd/MM/yyyy').format(dataAgendamento);
 
           return Card(
             elevation: 5,
@@ -77,6 +80,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
+            color: Colors.lightBlueAccent, // Cor de fundo
             child: ListTile(
               contentPadding: EdgeInsets.all(16),
               title: Column(
@@ -84,31 +88,32 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                 children: [
                   Text(
                     agendamentos[index]['titulo'],
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white), // Cor do texto
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Profissional: ${agendamentos[index]['nomeProfissional']}',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ],
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 8),
+                  SizedBox(height: 5),
                   Text(
-                    'Pet: ${agendamentos[index]['nomePet']}',
-                    style: TextStyle(fontSize: 16),
+                    'Pet: ${agendamentos[index]['pet']}',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 5),
                   Text(
                     'Data: ${dataFormatada}',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
+                  SizedBox(height: 5),
                   Text(
                     'Hora: ${agendamentos[index]['hora']}',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ],
               ),

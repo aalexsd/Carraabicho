@@ -1,3 +1,4 @@
+import 'package:Carrrabicho/screens/faturamento_screen.dart';
 import 'package:Carrrabicho/screens/home_display_screen.dart';
 import 'package:Carrrabicho/screens/home_screen.dart';
 import 'package:Carrrabicho/screens/pets_screen.dart';
@@ -8,6 +9,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../models/result_pessoa.dart';
 import 'agendamentos.dart';
+import 'home_profissional.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -18,10 +20,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    HomeDisplayScreen(),
-    PetsScreen(),
+    (user.isUsuario == 'S') ? HomeDisplayScreen() : ProfissionalHomeScreen(),
+    (user.isUsuario == 'S') ? PetsScreen() : FaturamentoScreen(),
     AgendamentosScreen(
-      idUsuario: user.id!,
+    idUsuario: user.id!,
     ),
 
     ProfileScreen(),
@@ -45,18 +47,25 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         items: [
+          
           SalomonBottomBarItem(
             icon: const Icon(Icons.home_outlined),
             title: const Text("Início"),
             selectedColor: Colors.white,
             activeIcon: Icon(Icons.home, color: Colors.white),
           ),
+          (user.isUsuario == 'S') ?
           SalomonBottomBarItem(
             icon: const Icon(Icons.pets_outlined),
             title: const Text("Pets"),
             selectedColor: Colors.white,
             activeIcon: Icon(Icons.pets, color: Colors.white),
-          ),
+          ) : SalomonBottomBarItem(
+            icon: const Icon(Icons.attach_money_outlined),
+            title: const Text("Faturamento"),
+            selectedColor: Colors.white,
+            activeIcon: Icon(Icons.attach_money, color: Colors.white),
+          ), 
           SalomonBottomBarItem(
             icon: const Icon(Icons.calendar_month_outlined),
             title: const Text("Agendamentos"),
