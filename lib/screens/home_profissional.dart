@@ -19,7 +19,8 @@ class ProfissionalHomeScreen extends StatefulWidget {
 }
 
 class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
-  List<Map<String, dynamic>> agendamentos = [];
+  List<ResultAgendamento> agendamentos = [];
+  List<ResultAgendamento> agendamentosAtivos = [];
 
   @override
   void initState() {
@@ -31,22 +32,22 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
   // Função para carregar os agendamentos do servidor
   void loadAgendamentos() async {
     try {
-      final response = await getAgendamento();
-      if (response.statusCode == 200) {
-        // Decodifica o corpo da resposta JSON
-        final List<dynamic> agendamentosData = json.decode(response.body);
-
-        // Mapeia os dados recebidos para a lista de agendamentos
-        List<Map<String, dynamic>> agendamentosList =
-            List<Map<String, dynamic>>.from(agendamentosData);
-
-        setState(() {
-          agendamentos = agendamentosList;
-        });
-      } else {
-        // Se a requisição não foi bem-sucedida, trata o erro
-        print('Erro ao carregar agendamentos: ${response.statusCode}');
-      }
+      final response = await getAgendamento().then((value) {
+        // print(value.body);
+        if (mounted) {
+          setState(() {
+            Iterable list = json.decode(value.body);
+            agendamentos =
+                list.map((model) => ResultAgendamento.fromJson(model)).toList();
+            agendamentosAtivos = list
+              .where((agendamento) => agendamento['status'] == false)
+              .map((model) => ResultAgendamento.fromJson(model))
+              .toList();
+              print(agendamentosAtivos.length);
+          });
+          
+        }
+      });
     } catch (error) {
       print('Erro ao carregar agendamentos: $error');
     }
@@ -58,23 +59,6 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
           ? Uri.parse(Wsf().baseurl() + 'agendamentos/usuario/${user.id}')
           : Uri.parse(Wsf().baseurl() + 'agendamentos/profissional/${user.id}'),
     );
-  }
-
-  Future<bool> myAgendamentos() async {
-    final response = await http.get(
-      user.isUsuario == 'S'
-          ? Uri.parse(Wsf().baseurl() + 'agendamentos/usuario/${user.id}')
-          : Uri.parse(Wsf().baseurl() + 'agendamentos/profissional/${user.id}'),
-    );
-    if (response.statusCode == 200) {
-      agendamento = ResultAgendamento.fromJson(jsonDecode(response.body));
-      if (user.id! > 0) {
-        return true;
-      } else
-        return false;
-    } else {
-      return false;
-    }
   }
 
   @override
@@ -93,50 +77,28 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              (agendamento.status == 0)
-                  ? Center(
-                      child: Text(
-                        'Você tem ${agendamentos.length} atendimento(s) agendado(s).',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  : Center(
-                      child: Text(
-                        'Você não tem atendimento(s) agendado(s).',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+              Center(
+                child: Text(
+                  'Você tem ${agendamentosAtivos.length} atendimento(s) agendado(s).',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
               SizedBox(height: 10),
               SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: (agendamento.status == 0)
-                    ? Row(
-                        children: [
-                          for (var agendamento in agendamentos)
-                            AgendamentoCard(agendamento: agendamento)
-                        ],
-                      )
-                    : Center(
-                        child: Text(
-                          'Você não tem atendimento(s) agendado(s)\n'
-                          'para os próximos dias.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-              ),
+                  scrollDirection: Axis.horizontal, child: Row(
+                    children: [
+                      for (var agendamento in agendamentosAtivos)
+                        AgendamentoCard(agendamento2: agendamento),
+                    ],
+                  )),
               SizedBox(height: 20),
               Text(
                 'Agendamentos por mês',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
+
               AspectRatio(
                 aspectRatio: 12 / 9,
                 child: DChartBarO(
@@ -163,45 +125,52 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
 }
 
 class AgendamentoCard extends StatelessWidget {
-  final Map<String, dynamic> agendamento;
+  final ResultAgendamento agendamento2;
 
-  const AgendamentoCard({Key? key, required this.agendamento})
+  const AgendamentoCard({Key? key, required this.agendamento2})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DateTime dataAgendamento = DateTime.parse(agendamento['data']);
-    String dataFormatada = DateFormat('dd/MM/yyyy').format(dataAgendamento);
+    DateTime? dataAgendamento = agendamento2.data != null
+        ? DateTime.parse(agendamento2.data!)
+        : null;
+
+    String? dataFormatada = dataAgendamento != null
+        ? DateFormat('dd/MM/yyyy').format(dataAgendamento)
+        : null;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FlipCard(
         fill: Fill.fillBack,
         back: Card(
-            elevation: 5,
-            margin: EdgeInsets.symmetric(horizontal: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
+          elevation: 5,
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          color: Colors.lightBlueAccent, // Cor de fundo
+          child: Container(
+            width: 250, // Largura do cartão
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  agendamento2.descricao ?? '', // Use ?? to provide a default value
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white, // Cor do texto
+                  ),
+                ),
+              ],
             ),
-            color: Colors.lightBlueAccent, // Cor de fundo
-            child: Container(
-                width: 250, // Largura do cartão
-
-                padding: EdgeInsets.all(16),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        agendamento['descricao'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white, // Cor do texto
-                        ),
-                      ),
-                    ]))),
+          ),
+        ),
         front: Card(
           elevation: 5,
           margin: EdgeInsets.symmetric(horizontal: 8),
@@ -216,7 +185,7 @@ class AgendamentoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  agendamento['titulo'],
+                  agendamento2.titulo ?? '', // Use ?? to provide a default value
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -226,17 +195,17 @@ class AgendamentoCard extends StatelessWidget {
                 SizedBox(height: 8),
                 SizedBox(height: 5),
                 Text(
-                  'Pet: ${agendamento['pet']}',
+                  'Pet: ${agendamento2.pet ?? ''}',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'Data: $dataFormatada',
+                  'Data: ${dataFormatada ?? ''}',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'Hora: ${agendamento['hora']}',
+                  'Hora: ${agendamento2.hora ?? ''}',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ],

@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 import '../bloc/wsf_param.dart';
+import '../models/result_agendamento.dart';
 import '../models/result_pessoa.dart';
 import 'agendamento_detalhe.dart';
 
@@ -18,7 +20,8 @@ class AgendamentosScreen extends StatefulWidget {
 }
 
 class _AgendamentosScreenState extends State<AgendamentosScreen> {
-  List<Map<String, dynamic>> agendamentos = [];
+  List<ResultAgendamento> agendamentos = [];
+    List<ResultAgendamento> agendamentosAtivos = [];
 
   @override
   void initState() {
@@ -30,22 +33,22 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
   // Função para carregar os agendamentos do servidor
   void loadAgendamentos() async {
     try {
-      final response = await getAgendamento();
-      if (response.statusCode == 200) {
-        // Decodifica o corpo da resposta JSON
-        final List<dynamic> agendamentosData = json.decode(response.body);
-
-        // Mapeia os dados recebidos para a lista de agendamentos
-        List<Map<String, dynamic>> agendamentosList =
-            List<Map<String, dynamic>>.from(agendamentosData);
-
-        setState(() {
-          agendamentos = agendamentosList;
-        });
-      } else {
-        // Se a requisição não foi bem-sucedida, trata o erro
-        print('Erro ao carregar agendamentos: ${response.statusCode}');
-      }
+      final response = await getAgendamento().then((value) {
+        // print(value.body);
+        if (mounted) {
+          setState(() {
+            Iterable list = json.decode(value.body);
+            agendamentos =
+                list.map((model) => ResultAgendamento.fromJson(model)).toList();
+            agendamentosAtivos = list
+              .where((agendamento) => agendamento['status'] == false)
+              .map((model) => ResultAgendamento.fromJson(model))
+              .toList();
+              print(agendamentosAtivos.length);
+          });
+          
+        }
+      });
     } catch (error) {
       print('Erro ao carregar agendamentos: $error');
     }
@@ -80,10 +83,13 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
       ListView.builder(
         itemCount: agendamentos.length,
         itemBuilder: (context, index) {
-          DateTime dataAgendamento =
-              DateTime.parse(agendamentos[index]['data']);
-          String dataFormatada =
-              DateFormat('dd/MM/yyyy').format(dataAgendamento);
+          final agendamento = agendamentos[index];
+          DateTime? dataAgendamento = agendamento.data != null
+                  ? DateTime.parse(agendamento.data!)
+                  : null;
+          String? dataFormatada = dataAgendamento != null
+                  ? DateFormat('dd/MM/yyyy').format(dataAgendamento)
+                  : null;
           return Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Slidable(
@@ -93,7 +99,9 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                 motion: const ScrollMotion(),
 
                 // A pane can dismiss the Slidable.
-                dismissible: DismissiblePane(onDismissed: () {}),
+                dismissible: DismissiblePane(onDismissed: () {
+                  showAlertDialog1ok(context, 'Deseja cancelar o agendamento?', "${agendamento.id}", nPop: 1, tipo: 1);
+                }),
 
                 // All actions are defined in the children parameter.
                 children: const [
@@ -105,18 +113,11 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                     icon: Icons.delete,
                     label: 'Cancelar',
                   ),
-                  SlidableAction(
-                    onPressed: doNothing,
-                    backgroundColor: Color(0xFF21B7CA),
-                    foregroundColor: Colors.white,
-                    icon: Icons.edit,
-                    label: 'Editar',
-                  ),
                 ],
               ),
               endActionPane: ActionPane(
                 motion: ScrollMotion(),
-                dismissible: DismissiblePane(onDismissed: () {_concluir("2");}),
+                dismissible: DismissiblePane(onDismissed: () {_concluir("${agendamento.id}");}),
                 children: [
                   SlidableAction(
                     // An action can be bigger than the others.
@@ -146,7 +147,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            agendamentos[index]['titulo'],
+                            agendamento.titulo!,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -154,7 +155,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            'Profissional: ${agendamentos[index]['nomeProfissional']}',
+                            'Profissional: ${agendamento.nomeProfissional!}',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ],
@@ -164,7 +165,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                         children: [
                           SizedBox(height: 5),
                           Text(
-                            'Pet: ${agendamentos[index]['pet']}',
+                            'Pet: ${agendamento.pet!}',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                           SizedBox(height: 5),
@@ -174,7 +175,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            'Hora: ${agendamentos[index]['hora']}',
+                            'Hora: ${agendamento.hora!}',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ],
@@ -192,7 +193,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                       contentPadding: EdgeInsets.all(16),
                       title: Center(
                         child: Text(
-                          "Descrição: ${agendamentos[index]['descricao']}",
+                          "Descrição: ${agendamento.descricao}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18,
@@ -208,6 +209,57 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
       ),
     );
   }
+
+Future<void> showAlertDialog1ok(BuildContext context, String mensagem, String idAgendamento,
+    {int nPop = 1, int tipo = 0}) async {
+  // configura o button
+  Widget okButton = CupertinoDialogAction(
+    child: Text("Sim"),
+    onPressed: () {
+      _concluir(idAgendamento);
+      int x;
+      for (x = 0; x < nPop; x++) Navigator.of(context).pop();
+    },
+  );
+    Widget naoButton = CupertinoDialogAction(
+    child: Text("Não"),
+    onPressed: () {
+      int x;
+      for (x = 0; x < nPop; x++) Navigator.of(context).pop();
+    },
+  );
+  // configura o  AlertDialog
+  Widget alerta = tipo == 0
+      ? CupertinoAlertDialog(
+          title: Text('Atenção'),
+          content: Text(mensagem),
+          actions: [okButton],
+        )
+      : CupertinoAlertDialog(
+          title: Text('Sucesso'),
+          content: Text(mensagem),
+          actions: [naoButton, okButton],
+        );
+
+  // exibe o dialog
+  if (Theme.of(context).platform == TargetPlatform.iOS) {
+    await showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alerta;
+      },
+    );
+  } else {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alerta;
+      },
+    );
+  }
+}
+
+
 }
 
 void doNothing(BuildContext context) {}
@@ -216,6 +268,8 @@ void _concluir(String idAgendamento) {
   var url = Uri.parse('http://localhost:8081/agendamentos/$idAgendamento/status');
   var data = {'novoStatus': 1};
   var data2 = json.encode(data);
+  print(data2);
+  print(idAgendamento);
   var headers = {'Content-Type': 'application/json'};
   http.put(url, body: data2, headers: headers).then((response) {
     print('Response status: ${response.statusCode}');

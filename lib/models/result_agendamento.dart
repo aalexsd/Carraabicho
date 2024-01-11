@@ -10,7 +10,7 @@ class ResultAgendamento {
   String? hora;
   String? descricao;
   String? pet;
-  int? status;
+  bool? status;
 
   ResultAgendamento({
     this.id,
