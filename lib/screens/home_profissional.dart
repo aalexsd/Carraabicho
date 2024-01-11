@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:Carrrabicho/models/result_agendamento.dart';
 import 'package:Carrrabicho/screens/teste.dart';
 import 'package:Carrrabicho/widgets/sidemenu.dart';
 import 'package:d_chart/commons/data_model.dart';
@@ -25,7 +26,6 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
     super.initState();
     // Chame a função para carregar os agendamentos ao inicializar o widget
     loadAgendamentos();
-
   }
 
   // Função para carregar os agendamentos do servidor
@@ -60,6 +60,23 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
     );
   }
 
+  Future<bool> myAgendamentos() async {
+    final response = await http.get(
+      user.isUsuario == 'S'
+          ? Uri.parse(Wsf().baseurl() + 'agendamentos/usuario/${user.id}')
+          : Uri.parse(Wsf().baseurl() + 'agendamentos/profissional/${user.id}'),
+    );
+    if (response.statusCode == 200) {
+      agendamento = ResultAgendamento.fromJson(jsonDecode(response.body));
+      if (user.id! > 0) {
+        return true;
+      } else
+        return false;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,24 +93,44 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Center(
-                child: Text(
-                  'Você tem ${agendamentos.length} atendimento(s) agendado(s).',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
+              (agendamento.status == 0)
+                  ? Center(
+                      child: Text(
+                        'Você tem ${agendamentos.length} atendimento(s) agendado(s).',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                        'Você não tem atendimento(s) agendado(s).',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
               SizedBox(height: 10),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (var agendamento in agendamentos)
-                      AgendamentoCard(agendamento: agendamento),
-                  ],
-                ),
+                child: (agendamento.status == 0)
+                    ? Row(
+                        children: [
+                          for (var agendamento in agendamentos)
+                            AgendamentoCard(agendamento: agendamento)
+                        ],
+                      )
+                    : Center(
+                        child: Text(
+                          'Você não tem atendimento(s) agendado(s)\n'
+                          'para os próximos dias.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
               ),
-            
               SizedBox(height: 20),
               Text(
                 'Agendamentos por mês',
@@ -117,7 +154,6 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
                   ],
                 ),
               ),
-              
             ],
           ),
         ),
@@ -140,33 +176,32 @@ class AgendamentoCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: FlipCard(
-                    fill: Fill
-                .fillBack, 
+        fill: Fill.fillBack,
         back: Card(
-          elevation: 5,
-          margin: EdgeInsets.symmetric(horizontal: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          color: Colors.lightBlueAccent, // Cor de fundo
-          child: Container(
-            width: 250, // Largura do cartão
-        
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  agendamento['descricao'],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white, // Cor do texto
-                  ),
-                ),]))),
+            elevation: 5,
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            color: Colors.lightBlueAccent, // Cor de fundo
+            child: Container(
+                width: 250, // Largura do cartão
+
+                padding: EdgeInsets.all(16),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        agendamento['descricao'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white, // Cor do texto
+                        ),
+                      ),
+                    ]))),
         front: Card(
           elevation: 5,
           margin: EdgeInsets.symmetric(horizontal: 8),
