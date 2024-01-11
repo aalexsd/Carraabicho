@@ -68,11 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextStyle(fontSize: 15)),
                     trailing: Text("${user.nome} ${user.sobrenome}" ?? ''),
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditProfileScreen(
-                                updateDisplayName: updateDisplayName,
-                                displayName: displayName,
-                              )));
                     },
                   ),
                   const Divider(height: 1),
@@ -93,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: BlockButton(
                   child: Text("Editar Perfil"),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/bluetooth');
+                    
                   },
                 ),
               ),

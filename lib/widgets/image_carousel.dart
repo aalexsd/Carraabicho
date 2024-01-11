@@ -23,7 +23,7 @@ class ImageCarousel extends StatelessWidget {
       options: CarouselOptions(
         height: 170,
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 5),
+        autoPlayInterval: Duration(seconds: 3),
         autoPlayAnimationDuration: Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,
         pauseAutoPlayOnTouch: true,

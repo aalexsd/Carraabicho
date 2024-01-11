@@ -1,10 +1,6 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:Carrrabicho/screens/login_page.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../widgets/auth_check.dart';
-import '../widgets/onboarding.dart';
-import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,71 +12,41 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    final textsplash = Stack(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/carrabicho.png'),
-                radius: 60,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Carrabicho',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Desenvolvido por Alex',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 20,
-                  ),
-                )
-              ],
-            ),
-          ],
+    return Scaffold(
+      backgroundColor: Colors.indigo[300],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.indigo[300],
+        title: Center(
+          child:
+          Image.asset("assets/images/logo.png", height: 50, width: 50),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 50.0),
-            child: Text(
-              'Versão Beta',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w300,
-                fontSize: 15,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-
-    return AnimatedSplashScreen(
-      backgroundColor: Colors.white,
-      splash: Image.asset(
-        'assets/images/splashscreen.png',
-        fit: BoxFit.cover,
       ),
-      splashIconSize: MediaQuery.of(context).size.height,
-      nextScreen: const AuthCheck(),
-      splashTransition: SplashTransition.sizeTransition,
+      body: Center(
+        child: SizedBox(
+      width: 300.0,
+      child: DefaultTextStyle(
+        style: const TextStyle(
+          fontSize: 30.0,
+          fontFamily: 'Agne',
+        ),
+        child: AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText('Carrabicho', textAlign: TextAlign.center),
+            TypewriterAnimatedText('O seu pet, nossa paixão', textAlign: TextAlign.center),
+            TypewriterAnimatedText('Dando vida e amor aos seus amigos peludos', textAlign: TextAlign.center),
+            TypewriterAnimatedText('Inovação que faz o rabinho balançar', textAlign: TextAlign.center),
+          ],
+          isRepeatingAnimation: false,
+          onFinished: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+          },
+        ),
+      ),
+        ),
+      ),
     );
   }
 }

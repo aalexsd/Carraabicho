@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Carrrabicho/screens/bottom_nav_screen.dart';
 import 'package:Carrrabicho/widgets/block_button.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -227,14 +229,31 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
         final data = jsonDecode(response.body);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNavScreen()));
-        BotToast.showText(
-          text: "Agendamento criado com sucesso!",
-          textStyle: TextStyle(
-              fontSize: 26, fontWeight: FontWeight.w500, color: Colors.white),
-          contentColor: Colors.green,
-          align: Alignment(0.7, -0.75),
-          duration: Duration(seconds: 3),
-        );
+        // BotToast.showText(
+        //   text: "Agendamento criado com sucesso!",
+        //   textStyle: TextStyle(
+        //       fontSize: 26, fontWeight: FontWeight.w500, color: Colors.white),
+        //   contentColor: Colors.green,
+        //   align: Alignment(0.7, -0.75),
+        //   duration: Duration(seconds: 3),
+        // );
+        final snackBar = SnackBar(
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Show!',
+                    message:
+                        'Agendamento criado com sucesso!',
+
+                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                    contentType: ContentType.success,
+                  ),
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
         print(data);
       } else {
         showAlertDialog1ok(context, 'Erro ao verificar usuário.');

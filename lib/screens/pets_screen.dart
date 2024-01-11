@@ -29,7 +29,10 @@ class _PetsScreenState extends State<PetsScreen> {
         automaticallyImplyLeading: false,
         title: const Text('Meus Pets'),
       ),
-      body: ListView.builder(
+      body: 
+      pets.length == 0 ? Center(child: Text('Nenhum pet cadastrado. Cadastre um agora mesmo no botão abaixo.', textAlign: TextAlign.center, style: TextStyle(fontSize: 18),),) :
+      
+      ListView.builder(
         itemCount: pets.length,
         itemBuilder: (context, index) {
           return Card(
