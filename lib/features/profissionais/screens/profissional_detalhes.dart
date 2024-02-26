@@ -1,23 +1,54 @@
 import 'package:Carrrabicho/models/profissinal.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/globalvariable.dart';
 import '../../agendamentos/screens/agendamento_detalhe.dart';
 
-class ProfissionalDetalhes extends StatelessWidget {
+class ProfissionalDetalhes extends StatefulWidget {
   final ResultProfissional profissional;
 
   ProfissionalDetalhes({Key? key, required this.profissional}) : super(key: key);
 
   @override
+  State<ProfissionalDetalhes> createState() => _ProfissionalDetalhesState();
+}
+
+class _ProfissionalDetalhesState extends State<ProfissionalDetalhes> {
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.profissional.id);
+  }
+  
+  @override
   Widget build(BuildContext context) {
     final screenW = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '${profissional.nome!} ${profissional.sobrenome!}',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: GlobalVariables.appBarGradient,
+            ),
+          ),
+          centerTitle: true,
+          title: Text('${widget.profissional.nome!} ${widget.profissional.sobrenome!}',),
+          actions: [
+            Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 80,
+                  height: 35,
+                  color: Colors.black,
+                ),
+              ),
+          ],
         ),
-        elevation: 1,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,7 +65,7 @@ class ProfissionalDetalhes extends StatelessWidget {
               ),
             ),
             Text(
-              'R\$ ${profissional.valor}.00',
+              'R\$ ${widget.profissional.valor}.00',
               style: TextStyle(fontSize: 24, color: Colors.green[300]),
             ),
             SizedBox(height: 20),
@@ -47,7 +78,7 @@ class ProfissionalDetalhes extends StatelessWidget {
               ),
             ),
             Text(
-              '${profissional.endereco}, ${profissional.bairro}, ${profissional.cidade}, ${profissional.uf}',
+              '${widget.profissional.endereco}, ${widget.profissional.bairro}, ${widget.profissional.cidade}, ${widget.profissional.uf}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
@@ -64,7 +95,7 @@ class ProfissionalDetalhes extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  profissional.email!,
+                  widget.profissional.email!,
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -83,7 +114,7 @@ class ProfissionalDetalhes extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  profissional.telefone!,
+                  widget.profissional.telefone!,
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -98,7 +129,7 @@ class ProfissionalDetalhes extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AgendamentoDetalhe(profissional: profissional,),
+                    builder: (context) => AgendamentoDetalhe(profissional: widget.profissional,),
                   ),
                 );
               },

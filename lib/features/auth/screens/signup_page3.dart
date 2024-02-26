@@ -36,7 +36,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
   final AuthService authService = AuthService();
 
   bool loading = false;
-  bool? isUsuario;
+  bool isUsuario = true;
   var usuarioSelecionado;
   bool showPassword = false;
   bool showPassword2 = false;
@@ -89,6 +89,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                
                 SizedBox(
                     height: 120,
                     width: 120,
@@ -147,7 +148,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                               } else {
                                 setState(() {
                                   user.isUsuario = 'S';
-                                  isUsuario = false;
+                                  isUsuario = true;
                                 });
                               }
                             },
@@ -299,17 +300,21 @@ class _SignUpPage3State extends State<SignUpPage3> {
                             height: 85,
                             child: CustomButtom(
                               onPressed: () {
+                                setState(() {
+                                    loading = true;
+                                  });
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   if (isUsuario == null || isUsuario == '') {
                                     showAlertDialog1ok(
                                         context, 'Selecione o tipo de usuário');
+                                        setState(() {
+                                          loading = false;
+                                        });
                                   } else {
                                     _verifyUser();
                                   }
-                                  setState(() {
-                                    loading = true;
-                                  });
+                                  
                                 }
                               },
                               child: Row(
@@ -378,7 +383,9 @@ class _SignUpPage3State extends State<SignUpPage3> {
       cidade: user.cidade!,
       uf: user.uf!,
       senha: user.senha!,
-      isUsuario: user.isUsuario!,
+      isUsuario: "S",
+      valor: "",
+      tipoProfissional: ""
     );
   }
 
@@ -421,11 +428,16 @@ class _SignUpPage3State extends State<SignUpPage3> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        if (data['exists'] && !isUsuario) {
+          showAlertDialog1ok(context, 'Email já cadastrado');
+        } else
 
-        if (!data['exists'] && isUsuario!) {
+        if (!data['exists'] && isUsuario) {
           await signUpUser();
+          print(isUsuario);
         } else if (!isUsuario!) {
           await signUpProfissional();
+          print(isUsuario);
         } else {
           showAlertDialog1ok(context, jsonDecode(response.body)['message']);
         }

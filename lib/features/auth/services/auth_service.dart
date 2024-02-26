@@ -60,6 +60,7 @@ class AuthService {
           token: '');
 
       var data = user.toJson();
+      print(data);
       var headers = {
         'Content-Type': 'application/json',
       };

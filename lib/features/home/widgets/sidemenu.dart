@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../commmon/widgets/chat.page.dart';
 import '../../auth/screens/login_page.dart';
+import '../payment_screen.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -47,6 +48,25 @@ class _MenuState extends State<Menu> {
                   width: 10,
                 ),
                 Text('Fale conosco'),
+              ],
+            ),
+          ),
+                    ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentScreen(),
+                ),
+              );
+            },
+            title: Row(
+              children: [
+                Icon(Icons.credit_card),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Pagamento'),
               ],
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import '../../../commmon/widgets/alert.dart';
 import '../services/auth_service.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/auth_scnreen';
@@ -110,188 +111,191 @@ class _LoginPageState extends State<LoginPage> {
                       'assets/images/logo.png',
                       fit: BoxFit.contain,
                     )),
-                Center(
-                  child: Flexible(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(1),
-                            spreadRadius: 2,
-                            blurRadius: 2,
-                            offset: Offset(0, 4), // changes position of shadow
+                Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(1),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(0, 4), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12.0),
                           ),
-                        ],
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12.0),
+                        ),
+                        width: screenW * .88,
+                        margin: EdgeInsets.symmetric(horizontal: 3),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Bem-vindo",
+                              style: const TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -1.5,
+                              ),
+                            ),
+                            Text(
+                              "Entre na sua conta",
+                              style: const TextStyle(
+                                  color: Colors.indigo,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: -1),
+                            ),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                CustomRadioButton(
+                                    defaultSelected: "USUARIO",
+                                    enableShape: true,
+                                    autoWidth: true,
+                                    elevation: 0,
+                                    absoluteZeroSpacing: false,
+                                    unSelectedColor:
+                                        Theme.of(context).canvasColor,
+                                    buttonLables: [
+                                      'Sou usuário',
+                                      'Sou prestador',
+                                    ],
+                                    buttonValues: [
+                                      "USUARIO",
+                                      "PRESTADOR",
+                                    ],
+                                    buttonTextStyle: ButtonTextStyle(
+                                        selectedColor: Colors.white,
+                                        unSelectedColor: Colors.black,
+                                        textStyle: TextStyle(fontSize: 16)),
+                                    radioButtonValue: (value) {
+                                      if (value == "PRESTADOR") {
+                                        setState(() {
+                                          isUsuario = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isUsuario = true;
+                                        });
+                                      }
+                                    },
+                                    selectedColor: Colors.indigo),
+                                CustomTextField(
+                                    onSaved: () {},
+                                    controller: _emailController,
+                                    hintText: 'Email'),
+                                CustomTextField(
+                                    onSaved: () {},
+                                    controller: _passwordController,
+                                    hintText: 'Senha',
+                                    obscureText: !showPassword,
+                                    suffixIcon: IconButton(
+                                      onPressed: _togglePasswordVisibility,
+                                      icon: Icon(
+                                        showPassword
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.black,
+                                      ),
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        child: const Text(
+                                          'Esqueceu sua senha?',
+                                          style: TextStyle(color: Colors.indigo),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                                          //onForgotPasswordClicked(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            CustomButtom(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    if (isUsuario) {
+                                      signInUser();
+                                    } else {
+                                      singInProfissional();
+                                    }
+                                  }
+                                },
+                                child: _loading
+                                    ? CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : Text(
+                                        "Entrar",
+                                        style: TextStyle(fontSize: 20, color: Colors.white),
+                                      )),
+                            if (isLogin)
+                              const Padding(
+                                padding: EdgeInsets.only(top: 10.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Divider(
+                                        thickness: 2,
+                                        indent: 50,
+                                        endIndent: 10,
+                                      ),
+                                    ),
+                                    Text("ou"),
+                                    Expanded(
+                                      child: Divider(
+                                        thickness: 2,
+                                        indent: 10,
+                                        endIndent: 50,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (isLogin)
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: SignInButton(
+                                    Buttons.google,
+                                    text: 'Entre com o Google',
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, SignUpPage.routeName);
+                              },
+                              child: Text(
+                                toggleButton,
+                                style: const TextStyle(color: Colors.indigo),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      width: screenW * .88,
-                      margin: EdgeInsets.symmetric(horizontal: 3),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Bem-vindo",
-                            style: const TextStyle(
-                              color: Colors.indigo,
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: -1.5,
-                            ),
-                          ),
-                          Text(
-                            "Entre na sua conta",
-                            style: const TextStyle(
-                                color: Colors.indigo,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -1),
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              CustomRadioButton(
-                                  defaultSelected: "USUARIO",
-                                  enableShape: true,
-                                  autoWidth: true,
-                                  elevation: 0,
-                                  absoluteZeroSpacing: false,
-                                  unSelectedColor:
-                                      Theme.of(context).canvasColor,
-                                  buttonLables: [
-                                    'Sou usuário',
-                                    'Sou prestador',
-                                  ],
-                                  buttonValues: [
-                                    "USUARIO",
-                                    "PRESTADOR",
-                                  ],
-                                  buttonTextStyle: ButtonTextStyle(
-                                      selectedColor: Colors.white,
-                                      unSelectedColor: Colors.black,
-                                      textStyle: TextStyle(fontSize: 16)),
-                                  radioButtonValue: (value) {
-                                    if (value == "PRESTADOR") {
-                                      setState(() {
-                                        isUsuario = false;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        isUsuario = true;
-                                      });
-                                    }
-                                  },
-                                  selectedColor: Colors.indigo),
-                              CustomTextField(
-                                  onSaved: () {},
-                                  controller: _emailController,
-                                  hintText: 'Email'),
-                              CustomTextField(
-                                  onSaved: () {},
-                                  controller: _passwordController,
-                                  hintText: 'Senha',
-                                  obscureText: !showPassword,
-                                  suffixIcon: IconButton(
-                                    onPressed: _togglePasswordVisibility,
-                                    icon: Icon(
-                                      showPassword
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: Colors.black,
-                                    ),
-                                  )),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton(
-                                      child: const Text(
-                                        'Esqueceu sua senha?',
-                                        style: TextStyle(color: Colors.indigo),
-                                      ),
-                                      onPressed: () {
-                                        // onForgotPasswordClicked(context);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          CustomButtom(
-                              onPressed: () {
-                                if (formKey.currentState!.validate()) {
-                                  formKey.currentState!.save();
-                                  if (isUsuario) {
-                                    signInUser();
-                                  } else {
-                                    singInProfissional();
-                                  }
-                                }
-                              },
-                              child: _loading
-                                  ? CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  : Text(
-                                      "Entrar",
-                                      style: TextStyle(fontSize: 20),
-                                    )),
-                          if (isLogin)
-                            const Padding(
-                              padding: EdgeInsets.only(top: 10.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2,
-                                      indent: 50,
-                                      endIndent: 10,
-                                    ),
-                                  ),
-                                  Text("ou"),
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2,
-                                      indent: 10,
-                                      endIndent: 50,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          if (isLogin)
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: SignInButton(
-                                  Buttons.google,
-                                  text: 'Entre com o Google',
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, SignUpPage.routeName);
-                            },
-                            child: Text(
-                              toggleButton,
-                              style: const TextStyle(color: Colors.indigo),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),

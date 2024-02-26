@@ -15,6 +15,6 @@ void httpErrorHandle(
       showErrorSnackBar(context, jsonDecode(response.body)['message']);
       break;
     case 500:
-      showErrorSnackBar(context, response.body);
+      showErrorSnackBar(context, jsonDecode(response.body)['message']);
   }
 }

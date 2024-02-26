@@ -1,6 +1,7 @@
 import 'package:Carrrabicho/commmon/widgets/bottom_nav_screen.dart';
 import 'package:Carrrabicho/features/auth/screens/signup_page.dart';
 import 'package:Carrrabicho/features/auth/screens/signup_page2.dart';
+import 'package:Carrrabicho/features/auth/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'features/auth/screens/login_page.dart';
@@ -8,6 +9,8 @@ import 'features/auth/screens/signup_page3.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
+    case SplashScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const SplashScreen());
     case LoginPage.routeName:
       return MaterialPageRoute(builder: (context) => const LoginPage());
     case BottomNavScreen.routeName:

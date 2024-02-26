@@ -297,7 +297,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Uri.parse(
             "$uri/verificar-usuario"), // Substitua pelo endereço correto da sua API
         body: jsonEncode({
-          'cpf': _cpfController.text.replaceAll(".", "").replaceAll("-", ""),
+          'cpf': _cpfController.text,
         }),
         headers: {'Content-Type': 'application/json'},
       );

@@ -67,6 +67,7 @@ dependencies:
   flip_card: ^0.7.0
   d_chart: ^2.6.4
   flutter_slidable: ^3.0.1
+  flutter_credit_card: ^4.0.1
 
 
 

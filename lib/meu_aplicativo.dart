@@ -55,7 +55,7 @@ class _MeuAplicativoState extends State<MeuAplicativo> {
         title: 'Carrabicho',
         onGenerateRoute: ((settings) => generateRoute(settings)),
         home: Provider.of<UserProvider>(context).user.token!.isNotEmpty
-            ? BottomNavScreen()
+            ? SplashScreen()
             : LoginPage());
   }
 }

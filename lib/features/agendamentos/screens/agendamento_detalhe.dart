@@ -39,7 +39,6 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
   void initState() {
     super.initState();
     loadPets();
-    print(widget.profissional.id);
   }
 
   Future<http.Response> getPets() async {
@@ -72,9 +71,29 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalhes do Agendamento'),
-        elevation: 1,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: GlobalVariables.appBarGradient,
+            ),
+          ),
+          title: const Text('Detalhes do agendamento', style: TextStyle(
+            fontSize: 18
+          ),),
+          actions: [
+            Container(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: 80,
+                height: 35,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -149,7 +168,7 @@ class _AgendamentoDetalheState extends State<AgendamentoDetalhe> {
               controller: hora,
               decoration: InputDecoration(
                   hintText:
-                      horaformated == null ? 'Selecione a data' : horaformated,
+                      horaformated == null ? 'Selecione a hora' : horaformated,
                   border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 5, horizontal: 5)),

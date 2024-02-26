@@ -62,12 +62,8 @@ class _SignUpPage2State extends State<SignUpPage2> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                    height: 120,
-                    width: 120,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.contain,
-                    )),
+                  height: screenH * .1,
+                ),
                 Center(
                   child: Flexible(
                     child: Container(

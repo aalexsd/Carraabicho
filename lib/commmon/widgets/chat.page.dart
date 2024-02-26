@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/globalvariable.dart';
+
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -10,11 +12,28 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        centerTitle: true,
-        title: Text("Fale conosco"),
-     
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: GlobalVariables.appBarGradient,
+            ),
+          ),
+        
+          title: const Text('Fale conosco'),
+          actions: [
+            Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 80,
+                  height: 35,
+                  color: Colors.black,
+                ),
+              ),
+          ],
+        ),
       ),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),

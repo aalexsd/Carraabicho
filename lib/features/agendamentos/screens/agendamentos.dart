@@ -121,7 +121,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
                             'Deseja cancelar o agendamento?',
                             "${agendamento.id}",
                             nPop: 1,
-                            tipo: 1);
+                            );
                       }),
 
                       // All actions are defined in the children parameter.
@@ -262,7 +262,7 @@ class _AgendamentosScreenState extends State<AgendamentosScreen> {
         ? CupertinoAlertDialog(
             title: Text('Atenção'),
             content: Text(mensagem),
-            actions: [okButton],
+            actions: [naoButton,okButton],
           )
         : CupertinoAlertDialog(
             title: Text('Sucesso'),

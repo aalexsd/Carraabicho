@@ -88,7 +88,7 @@ class _CuidadorScreenState extends State<CuidadorScreen> {
         final profissional = vets[index];
         return ProfissionalCard(
           profissional: ResultProfissional(
-            id: profissional['id'],
+            id: profissional['_id'],
             nome: profissional['nome'],
             sobrenome: profissional['sobrenome'],
             email: profissional['email'],

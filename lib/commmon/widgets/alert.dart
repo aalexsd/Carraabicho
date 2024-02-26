@@ -11,6 +11,7 @@ Future<void> showAlertDialog1ok(BuildContext context, String mensagem,
       for (x = 0; x < nPop; x++) Navigator.of(context).pop();
     },
   );
+  
   // configura o  AlertDialog
   Widget alerta = tipo == 0
       ? CupertinoAlertDialog(

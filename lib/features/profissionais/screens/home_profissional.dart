@@ -27,40 +27,40 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
   void initState() {
     super.initState();
     // Chame a função para carregar os agendamentos ao inicializar o widget
-    // loadAgendamentos();
+    loadAgendamentos();
   }
 
-  // Função para carregar os agendamentos do servidor
-  // void loadAgendamentos() async {
-  //   try {
-  //     final response = await getAgendamento().then((value) {
-  //       // print(value.body);
-  //       if (mounted) {
-  //         setState(() {
-  //           Iterable list = json.decode(value.body);
-  //           agendamentos =
-  //               list.map((model) => ResultAgendamento.fromJson(model)).toList();
-  //           agendamentosAtivos = list
-  //             .where((agendamento) => agendamento['status'] == false)
-  //             .map((model) => ResultAgendamento.fromJson(model))
-  //             .toList();
-  //             print(agendamentosAtivos.length);
-  //         });
+  void loadAgendamentos() async {
+    try {
+      final response = await getAgendamento().then((value) {
+        if (mounted) {
+          setState(() {
+            Iterable list = json.decode(value.body);
+            agendamentos =
+                list.map((model) => ResultAgendamento.fromJson(model)).toList();
+            agendamentosAtivos = list
+              .where((agendamento) => agendamento['status'] == false)
+              .map((model) => ResultAgendamento.fromJson(model))
+              .toList();
+              print(agendamentosAtivos.length);
+          });
           
-  //       }
-  //     });
-  //   } catch (error) {
-  //     print('Erro ao carregar agendamentos: $error');
-  //   }
-  // }
+        }
+      });
+    } catch (error) {
+      print('Erro ao carregar agendamentos: $error');
+    }
+  }
 
-  // static Future<http.Response> getAgendamento() async {
-  //   return await http.get(
-  //     user.isUsuario == 'S'
-  //         ? Uri.parse(Wsf().baseurl() + 'agendamentos/usuario/${user.id}')
-  //         : Uri.parse(Wsf().baseurl() + 'agendamentos/profissional/${user.id}'),
-  //   );
-  // }
+  Future<http.Response> getAgendamento() async {
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+
+    return await http.get(
+      user.isUsuario == 'S'
+          ? Uri.parse('$uri/agendamentos/usuario/${user.id}')
+          : Uri.parse('$uri/agendamentos/profissional/${user.id}'),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
             children: [
               Center(
                 child: Text(
-                  'Você tem ${agendamentosAtivos.length} atendimento(s) agendado(s).',
+                  'Você tem ${agendamentos.length} atendimento(s) agendado(s).',
                   textAlign: TextAlign.start,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -109,7 +109,7 @@ class _ProfissionalHomeScreenState extends State<ProfissionalHomeScreen> {
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal, child: Row(
                     children: [
-                      for (var agendamento in agendamentosAtivos)
+                      for (var agendamento in agendamentos)
                         AgendamentoCard(agendamento2: agendamento),
                     ],
                   )),
